@@ -1,0 +1,7 @@
+<fonts>
+	<font id="ccFont40px" filename="ccFont40px.fnt"></font>
+	<font id="ccFont50px" filename="ccFont50px.fnt"></font>
+	<font id="ccFont110px" filename="ccFont110px.fnt"></font>	
+	<font id="garminFont40px" filename="garminFont40px.fnt"></font>
+	<font id="garminFont30px" filename="garminFont30px.fnt"></font>
+</fonts>  

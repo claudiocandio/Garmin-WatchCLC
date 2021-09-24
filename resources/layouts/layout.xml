@@ -1,0 +1,23 @@
+<layout id="WatchFace">
+    <drawable class="Background" />
+    <label id="BatteryLabel" x="center" y="1%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="BatteryIcon" x="64%" y="1%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="BLEIcon" x="26%" y="4%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    
+    <label id="StepsLabel" x="39%" y="18%" justification="Graphics.TEXT_JUSTIFY_RIGHT"/>
+    <label id="StepsIcon" x="46%" y="18%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DistanceLabel" x="52%" y="18%" justification="Graphics.TEXT_JUSTIFY_LEFT"/>
+    
+    <label id="TimeLabel" x="center" y="27%" font="Graphics.FONT_NUMBER_MEDIUM" justification="Graphics.TEXT_JUSTIFY_CENTER" color="Graphics.COLOR_WHITE"/>
+    
+    <label id="HeartIcon" x="3%" y="32%"/>
+    <label id="HeartLabel" x="3%" y="46%"/>
+    
+    <label id="SecsLabel" x="82%" y="46%"/>
+    <label id="SleepIcon" x="82%" y="31%"/>
+    
+    <label id="PressureLabel" x="center" y="63%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DateLabel" x="center" y="75%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+<!--
+-->
+</layout>
