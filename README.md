@@ -13,6 +13,15 @@ At the moment it has a few configuration options I like, but it may change in th
 
 Garmin IQ Store: <https://apps.garmin.com/en-US/apps/8a17a33d-da70-4c6b-a53e-de51537c9c24>
 
+### Import this project with Eclipse IDE for Java
+
+```bash
+$ git clone https://github.com/claudiocandio/Garmin-WatchCLC
+$ mv Garmin-WatchCLC WatchCLC
+```
+
+Open Eclipse and import the project.
+
 ## Disclaimer
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
