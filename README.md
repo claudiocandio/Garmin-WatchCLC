@@ -3,11 +3,11 @@
 [![Donate Bitcoin](https://claudiocandio.github.io/img/donate-bitcoin-orange.svg)](https://claudiocandio.github.io/img/donate-bitcoin.html)
 [![Donate Ethereum](https://claudiocandio.github.io/img/donate-etherum-green.svg)](https://claudiocandio.github.io/img/donate-ethereum.html)
 
-# My Fenix 6 Garmin Watch Face
+# Garmin Fenix/Quatix 6 Watch Face
 
 This is the Watch Face I'm using for my Garmin Fenix 6 Sapphire.
 
-At the moment it has the configuration options I like but it may change in the future.
+At the moment it has a few configuration options I like, but it may change in the future.
 
 <img src="resources/images/WatchCLC1.png" width="50%">
 

@@ -13,6 +13,7 @@ using Toybox.Time.Gregorian;
 
 class WatchCLCView extends WatchUi.WatchFace {
 
+	var screen = null as Text;
     var view = null as Text;
 	var ccFontBig = null;
 	var ccFont = null;
@@ -42,7 +43,21 @@ class WatchCLCView extends WatchUi.WatchFace {
 
     // Load your resources here
     function onLayout(dc as Dc) as Void {
-        setLayout(Rez.Layouts.WatchFace(dc));
+
+		// System.println("screen: " + System.getDeviceSettings().screenWidth + "x" + System.getDeviceSettings().screenHeight);
+		screen = System.getDeviceSettings().screenWidth + "x" + System.getDeviceSettings().screenHeight;
+		screen = screen.toString();
+
+		if (screen.equals("240x240")) { // Fenix 6S
+	        setLayout(Rez.Layouts.Fenix6S(dc));
+		} else if (screen.equals("260x260")) { // Fenix 6
+	        setLayout(Rez.Layouts.Fenix6(dc));
+		} else if (screen.equals("280x280")) { // Fenix 6X
+	        setLayout(Rez.Layouts.Fenix6X(dc));
+		} else { // should not get here
+			System.println("NO SCREEN = " + screen);
+			System.exit();
+		}
         
         ccFontBig = WatchUi.loadResource(Rez.Fonts.ccFont110px);
         ccFont = WatchUi.loadResource(Rez.Fonts.ccFont50px);
@@ -126,7 +141,7 @@ class WatchCLCView extends WatchUi.WatchFace {
         view.setFont(ccFontBig);
         view.setColor(ForegroundColor);
         view.setText(Lang.format(timeFormat, [hours, clockTime.min.format("%02d")]));
-		//view.setText("22:00");
+		//view.setText("22:33");
 		
         // Show Secs
         if ( showSecs ) {
@@ -236,7 +251,11 @@ class WatchCLCView extends WatchUi.WatchFace {
 		var datenowStr = Lang.format("$1$ $2$ $3$", [datenow.day_of_week, datenow.day, datenow.month]);
         if (datenowStr != datenowStrPrev) {
 	        view = View.findDrawableById("DateLabel");
-    	    view.setFont(ccFont);
+			if (screen.equals("240x240")) { // Fenix 6S
+    	    	view.setFont(ccFontSmall);
+			} else {
+	    	    view.setFont(ccFont);
+			}
         	view.setColor(ForegroundColor);
 	        view.setText(datenowStr);
 	        datenowStrPrev = datenowStr;
