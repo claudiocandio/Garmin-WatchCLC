@@ -18,7 +18,7 @@ class WatchCLCView extends WatchUi.WatchFace {
 	var ccFont = null;
 	var ccFontSmall = null;
 	
-	var ccColor = null as Number;
+	var ForegroundColor = null as Number;
 
 	var garminFontBig = null;
 	var garminFont = null;
@@ -51,7 +51,7 @@ class WatchCLCView extends WatchUi.WatchFace {
         garminFont = WatchUi.loadResource(Rez.Fonts.garminFont40px);
         garminFontSmall = WatchUi.loadResource(Rez.Fonts.garminFont30px);
         
-        ccColor = getApp().getProperty("ForegroundColor"); //Graphics.COLOR_WHITE; //getApp().getProperty("ForegroundColor");
+        ForegroundColor = getApp().getProperty("ForegroundColor");
         
         view = View.findDrawableById("HeartIcon");
    	    view.setFont(garminFont);
@@ -60,7 +60,7 @@ class WatchCLCView extends WatchUi.WatchFace {
         
         view = View.findDrawableById("StepsIcon");
    	    view.setFont(garminFont);
-       	view.setColor(ccColor);
+       	view.setColor(ForegroundColor);
        	view.setText("I");
 
     }
@@ -124,7 +124,7 @@ class WatchCLCView extends WatchUi.WatchFace {
         // Show Time
         view = View.findDrawableById("TimeLabel") as Text;
         view.setFont(ccFontBig);
-        view.setColor(ccColor);
+        view.setColor(ForegroundColor);
         view.setText(Lang.format(timeFormat, [hours, clockTime.min.format("%02d")]));
 		//view.setText("22:00");
 		
@@ -132,7 +132,7 @@ class WatchCLCView extends WatchUi.WatchFace {
         if ( showSecs ) {
         	view = View.findDrawableById("SecsLabel") as Text;
 	        view.setFont(ccFont);
-    	    view.setColor(ccColor);
+    	    view.setColor(ForegroundColor);
         	view.setText(Lang.format(".$1$", [clockTime.sec.format("%02d")]));
         	showSecsPrev = true;
         } else if ( !showSecs && showSecsPrev ) {
@@ -173,7 +173,7 @@ class WatchCLCView extends WatchUi.WatchFace {
        			view.setColor(Graphics.COLOR_RED);
        			view.setText("C"); // "B" battery horizontal - "C" battery vertical
     	    } else {
-				view.setColor(ccColor);
+				view.setColor(ForegroundColor);
 		        view.setText(batteryStr);
 
 		        view = View.findDrawableById("BatteryIcon");
@@ -188,7 +188,7 @@ class WatchCLCView extends WatchUi.WatchFace {
         if (heart != heartPrev) {
 	        view = View.findDrawableById("HeartLabel");
     	    view.setFont(ccFont);
-        	view.setColor(ccColor);
+        	view.setColor(ForegroundColor);
 	        view.setText(heart);
 	        heartPrev = heart;
         }
@@ -196,7 +196,7 @@ class WatchCLCView extends WatchUi.WatchFace {
         if (steps != stepsPrev) {
 	        view = View.findDrawableById("StepsLabel");
     	    view.setFont(ccFontSmall);
-        	view.setColor(ccColor);
+        	view.setColor(ForegroundColor);
 	        view.setText(steps);
 	        stepsPrev = steps;
         }
@@ -204,7 +204,7 @@ class WatchCLCView extends WatchUi.WatchFace {
         if (distance != distancePrev) {
 	        view = View.findDrawableById("DistanceLabel");
     	    view.setFont(ccFontSmall);
-        	view.setColor(ccColor);
+        	view.setColor(ForegroundColor);
 	        view.setText(distance);
 	        distancePrev = distance;
         }
@@ -227,7 +227,7 @@ class WatchCLCView extends WatchUi.WatchFace {
         if (pressure != pressurePrev) {
 	        view = View.findDrawableById("PressureLabel");
     	    view.setFont(ccFontSmall);
-        	view.setColor(ccColor);
+        	view.setColor(ForegroundColor);
 	        view.setText(pressure);
 	        pressurePrev = pressure;
         }
@@ -237,7 +237,7 @@ class WatchCLCView extends WatchUi.WatchFace {
         if (datenowStr != datenowStrPrev) {
 	        view = View.findDrawableById("DateLabel");
     	    view.setFont(ccFont);
-        	view.setColor(ccColor);
+        	view.setColor(ForegroundColor);
 	        view.setText(datenowStr);
 	        datenowStrPrev = datenowStr;
         }
