@@ -90,6 +90,9 @@ class WatchCLCView extends WatchUi.WatchFace {
 
     // Update the view
     function onUpdate(dc as Dc) as Void {
+
+        ForegroundColor = getApp().getProperty("ForegroundColor");
+
         // Get the current time and format it correctly
         var timeFormat = "$1$:$2$";
         var clockTime = System.getClockTime();
