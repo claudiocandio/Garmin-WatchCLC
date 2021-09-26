@@ -7,7 +7,7 @@
 
 This is the Watch Face I'm using for my Garmin Fenix 6 Sapphire.
 
-At the moment it has a few configuration options I like, but it may change in the future.
+At the moment it is compatible with all Fenix/Quatix 6 devices and it has a few configuration options I like, this may change in the future.
 
 <img src="resources/images/WatchCLC1.png" width="50%">
 

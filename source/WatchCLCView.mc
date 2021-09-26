@@ -31,9 +31,11 @@ class WatchCLCView extends WatchUi.WatchFace {
 	var stepsPrev = null as Text;
 	var distancePrev = null as Text;
 	var batteryPrev = null as Number;
+	var batteryLowPrev = null as Number;
 	var pressurePrev = null;
 	var datenowStrPrev = null;
-	
+
+	var batteryLow = null as Number;
 	var showSecs = true;
 	var showSecsPrev = false;
 	
@@ -172,14 +174,15 @@ class WatchCLCView extends WatchUi.WatchFace {
        		BLEconnectedPrev = false;
 		}
 
-		var battery = null;
-        battery = System.getSystemStats().battery;
-        if (battery != batteryPrev) {
+        var battery = System.getSystemStats().battery;
+		var batteryLow = getApp().getProperty("LowBattery");
+
+        if (battery != batteryPrev || batteryLow != batteryLowPrev) {
 			var batteryStr = Lang.format("$1$%", [battery.format("%3d")]);
 
 	        view = View.findDrawableById("BatteryLabel");
     	    view.setFont(ccFontSmall);
-    	    if (battery < getApp().getProperty("LowBattery")){
+    	    if (battery < batteryLow){
 	        	view.setColor(Graphics.COLOR_RED);
 		        view.setText(batteryStr);
 
@@ -198,6 +201,7 @@ class WatchCLCView extends WatchUi.WatchFace {
 	        //view.setText(Lang.format("$1$%", [battery.format("%3d")]));
 
 			batteryPrev = battery;
+			batteryLowPrev = batteryLow;
         }
 
         if (heart != heartPrev) {
