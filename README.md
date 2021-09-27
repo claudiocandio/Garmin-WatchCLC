@@ -1,13 +1,14 @@
 [![GitHub license](https://claudiocandio.github.io/img/license_mit.svg)](https://github.com/claudiocandio/Garmin-WatchCLC/blob/master/LICENSE)
 [![Language: Go](https://claudiocandio.github.io/img/language-MonkeyC-blue.svg)](https://developer.garmin.com/connect-iq/monkey-c/)
-[![Donate Bitcoin](https://claudiocandio.github.io/img/donate-bitcoin-orange.svg)](https://claudiocandio.github.io/img/donate-bitcoin.html)
-[![Donate Ethereum](https://claudiocandio.github.io/img/donate-etherum-green.svg)](https://claudiocandio.github.io/img/donate-ethereum.html)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate?hosted_button_id=VLWUKUV3KRZA2)
 
-# Garmin Fenix/Quatix 6 Watch Face
+# Garmin Fenix 6 Watch Face
 
 This is the Watch Face I'm using for my Garmin Fenix 6 Sapphire.
 
-At the moment it is compatible with all Fenix/Quatix 6 devices and it has a few configuration options I like, this may change in the future.
+I also added more compatible watches but just tested them using the simulator, I'm not sure they are all ok.
+
+This Watch Face has a few configuration options I like and it may change in the future.
 
 <img src="resources/images/WatchCLC1.png" width="50%">
 
