@@ -154,11 +154,16 @@ class WatchCLCView extends WatchUi.WatchFace {
 		}
 
 		var heart = null;
-		if (ActivityMonitor has :getHeartRateHistory && ActivityMonitor.getHeartRateHistory(1, true) != null) {
-			var HRH = ActivityMonitor.getHeartRateHistory(1, true);
-			var HRS = HRH.next();
-			if(HRS != null && HRS.heartRate != ActivityMonitor.INVALID_HR_SAMPLE) {
-				heart = HRS.heartRate;
+		if (Activity has :getActivityInfo && Activity.getActivityInfo() != null) {
+			heart = Activity.getActivityInfo().currentHeartRate;
+		}
+		if(heart == null) {
+			if (ActivityMonitor has :getHeartRateHistory && ActivityMonitor.getHeartRateHistory(1, true) != null) {
+				var HRH = ActivityMonitor.getHeartRateHistory(1, true);
+				var HRS = HRH.next();
+				if(HRS != null && HRS.heartRate != ActivityMonitor.INVALID_HR_SAMPLE) {
+					heart = HRS.heartRate;
+				}
 			}
 		}
 		if(heart != null) {
