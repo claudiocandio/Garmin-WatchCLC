@@ -1,49 +1,53 @@
 <!--
 -->
 <layouts>
-<layout id="Fenix6S">
+<layout id="Screen215x180">
     <drawable class="Background" />
-    <label id="BatteryLabel" x="center" y="1%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
-    <label id="BatteryIcon" x="64%" y="1%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
-    <label id="BLEIcon" x="26%" y="4%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="BatteryLabel" x="center" y="2%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="BatteryIcon" x="64%" y="0%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="BLEIcon" x="26%" y="0%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
-    <label id="StepsLabel" x="39%" y="18%" justification="Graphics.TEXT_JUSTIFY_RIGHT"/>
-    <label id="StepsIcon" x="46%" y="18%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
-    <label id="DistanceLabel" x="52%" y="18%" justification="Graphics.TEXT_JUSTIFY_LEFT"/>
+    <label id="StepsLabel" x="39%" y="19%" justification="Graphics.TEXT_JUSTIFY_RIGHT"/>
+    <label id="StepsIcon" x="46%" y="14%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DistanceLabel" x="52%" y="19%" justification="Graphics.TEXT_JUSTIFY_LEFT"/>
     
-    <label id="TimeLabel" x="center" y="27%" font="Graphics.FONT_NUMBER_MEDIUM" justification="Graphics.TEXT_JUSTIFY_CENTER" color="Graphics.COLOR_WHITE"/>
+    <label id="TimeLabel" x="center" y="27%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
-    <label id="HeartIcon" x="3%" y="33%"/>
-    <label id="HeartLabel" x="3%" y="47%"/>
+    <label id="HeartIcon" x="10%" y="29%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="HeartLabel" x="10%" y="49%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
-    <label id="SleepIcon" x="82%" y="31%"/>
-    <label id="SecsLabel" x="82%" y="47%"/>
+    <label id="SleepIcon" x="90%" y="29%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="SecsLabel" x="90%" y="49%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
-    <label id="PressureLabel" x="center" y="63%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
-    <label id="DateLabel" x="center" y="75%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF1Icon" x="22%" y="68%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF1" x="center" y="69%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF2Icon" x="22%" y="82%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF2" x="center" y="83%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
 </layout>
-<layout id="Fenix6">
+<layout id="Screen240x240">
     <drawable class="Background" />
     <label id="BatteryLabel" x="center" y="1%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="BatteryIcon" x="64%" y="1%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="BLEIcon" x="26%" y="4%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
-    <label id="StepsLabel" x="39%" y="18%" justification="Graphics.TEXT_JUSTIFY_RIGHT"/>
-    <label id="StepsIcon" x="46%" y="18%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
-    <label id="DistanceLabel" x="52%" y="18%" justification="Graphics.TEXT_JUSTIFY_LEFT"/>
+    <label id="StepsLabel" x="39%" y="17%" justification="Graphics.TEXT_JUSTIFY_RIGHT"/>
+    <label id="StepsIcon" x="46%" y="16%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DistanceLabel" x="52%" y="17%" justification="Graphics.TEXT_JUSTIFY_LEFT"/>
     
-    <label id="TimeLabel" x="center" y="27%" font="Graphics.FONT_NUMBER_MEDIUM" justification="Graphics.TEXT_JUSTIFY_CENTER" color="Graphics.COLOR_WHITE"/>
+    <label id="TimeLabel" x="center" y="28%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
-    <label id="HeartIcon" x="3%" y="32%"/>
-    <label id="HeartLabel" x="3%" y="46%"/>
+    <label id="HeartIcon" x="10%" y="32%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="HeartLabel" x="10%" y="48%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
-    <label id="SleepIcon" x="82%" y="31%"/>
-    <label id="SecsLabel" x="82%" y="46%"/>
+    <label id="SleepIcon" x="89%" y="32%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="SecsLabel" x="89%" y="48%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
-    <label id="PressureLabel" x="center" y="63%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
-    <label id="DateLabel" x="center" y="75%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF1Icon" x="22%" y="63%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF1" x="center" y="63%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF2Icon" x="22%" y="75%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF2" x="center" y="75%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
 </layout>
-<layout id="Fenix6X">
+<layout id="Screen260x260">
     <drawable class="Background" />
     <label id="BatteryLabel" x="center" y="1%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="BatteryIcon" x="64%" y="1%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
@@ -53,15 +57,40 @@
     <label id="StepsIcon" x="46%" y="18%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="DistanceLabel" x="52%" y="18%" justification="Graphics.TEXT_JUSTIFY_LEFT"/>
     
-    <label id="TimeLabel" x="center" y="27%" font="Graphics.FONT_NUMBER_MEDIUM" justification="Graphics.TEXT_JUSTIFY_CENTER" color="Graphics.COLOR_WHITE"/>
+    <label id="TimeLabel" x="center" y="29%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
-    <label id="HeartIcon" x="4%" y="30%"/>
-    <label id="HeartLabel" x="4%" y="44%"/>
+    <label id="HeartIcon" x="10%" y="33%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="HeartLabel" x="10%" y="47%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
-    <label id="SleepIcon" x="81%" y="29%"/>
-    <label id="SecsLabel" x="81%" y="44%"/>
+    <label id="SleepIcon" x="89%" y="33%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="SecsLabel" x="89%" y="47%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
-    <label id="PressureLabel" x="center" y="63%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
-    <label id="DateLabel" x="center" y="75%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF1Icon" x="22%" y="64%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF1" x="center" y="63%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF2Icon" x="22%" y="76%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF2" x="center" y="75%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+</layout>
+<layout id="Screen280x280">
+    <drawable class="Background" />
+    <label id="BatteryLabel" x="center" y="1%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="BatteryIcon" x="64%" y="1%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="BLEIcon" x="26%" y="4%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    
+    <label id="StepsLabel" x="39%" y="18%" justification="Graphics.TEXT_JUSTIFY_RIGHT"/>
+    <label id="StepsIcon" x="46%" y="18%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DistanceLabel" x="52%" y="18%" justification="Graphics.TEXT_JUSTIFY_LEFT"/>
+    
+    <label id="TimeLabel" x="center" y="29%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    
+    <label id="HeartIcon" x="10%" y="33%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="HeartLabel" x="10%" y="47%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    
+    <label id="SleepIcon" x="89%" y="33%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="SecsLabel" x="89%" y="47%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    
+    <label id="DF1Icon" x="22%" y="64%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF1" x="center" y="63%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF2Icon" x="22%" y="76%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF2" x="center" y="75%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
 </layout>
 </layouts>

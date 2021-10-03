@@ -8,9 +8,6 @@ using Toybox.ActivityMonitor;
 using Toybox.SensorHistory;
 using Toybox.Time.Gregorian;
 
-// Windows: alt + num ascii numeri keypad with blocnum pressed, not keybord
-// Linux ctrl-shift-U hex 4 cifre e invio
-
 class WatchCLCView extends WatchUi.WatchFace {
 
 	var screen = null as Text;
@@ -20,8 +17,8 @@ class WatchCLCView extends WatchUi.WatchFace {
 	var ccFontSmall = null;
 	
 	var ForegroundColor = null as Number;
+	var BackgroundColor = null as Number;
 
-	var garminFontBig = null;
 	var garminFont = null;
 	var garminFontSmall = null;
 	
@@ -32,12 +29,24 @@ class WatchCLCView extends WatchUi.WatchFace {
 	var distancePrev = null as Text;
 	var batteryPrev = null as Number;
 	var batteryLowPrev = null as Number;
-	var pressurePrev = null;
+	var df1Prev = null;
+	var df1valPrev = null;
+	var df2Prev = null;
+	var df2valPrev = null;
 	var datenowStrPrev = null;
 
 	var batteryLow = null as Number;
 	var showSecs = true;
 	var showSecsPrev = false;
+
+	enum {
+		CALORIES,
+		PRESSURE,
+		FLOORSCLIMBED,
+		ACTIVEMINUTESWEEK,
+		DATE,
+		EMPTY
+	}
 	
     function initialize() {
         WatchFace.initialize();
@@ -50,35 +59,50 @@ class WatchCLCView extends WatchUi.WatchFace {
 		screen = System.getDeviceSettings().screenWidth + "x" + System.getDeviceSettings().screenHeight;
 		screen = screen.toString();
 
-		if (screen.equals("240x240")) { // Fenix 6S
-	        setLayout(Rez.Layouts.Fenix6S(dc));
+		if (screen.equals("215x180")) {
+	        setLayout(Rez.Layouts.Screen215x180(dc));
+	        ccFontBig = WatchUi.loadResource(Rez.Fonts.ccFont90px);
+    	    ccFont = WatchUi.loadResource(Rez.Fonts.ccFont40px);
+        	ccFontSmall = WatchUi.loadResource(Rez.Fonts.ccFont30px);
+		
+		} else if (screen.equals("240x240")) { // Fenix 6S
+	        setLayout(Rez.Layouts.Screen240x240(dc));
+	        ccFontBig = WatchUi.loadResource(Rez.Fonts.ccFont100px);
+    	    ccFont = WatchUi.loadResource(Rez.Fonts.ccFont40px);
+        	ccFontSmall = WatchUi.loadResource(Rez.Fonts.ccFont35px);
+		
 		} else if (screen.equals("260x260")) { // Fenix 6
-	        setLayout(Rez.Layouts.Fenix6(dc));
+	        setLayout(Rez.Layouts.Screen260x260(dc));
+	        ccFontBig = WatchUi.loadResource(Rez.Fonts.ccFont105px);
+    	    ccFont = WatchUi.loadResource(Rez.Fonts.ccFont50px);
+        	ccFontSmall = WatchUi.loadResource(Rez.Fonts.ccFont40px);
+		
 		} else if (screen.equals("280x280")) { // Fenix 6X
-	        setLayout(Rez.Layouts.Fenix6X(dc));
+	        setLayout(Rez.Layouts.Screen280x280(dc));
+	        ccFontBig = WatchUi.loadResource(Rez.Fonts.ccFont110px);
+    	    ccFont = WatchUi.loadResource(Rez.Fonts.ccFont50px);
+        	ccFontSmall = WatchUi.loadResource(Rez.Fonts.ccFont40px);
+		
 		} else { // should not get here
 			System.println("NO SCREEN = " + screen);
 			System.exit();
 		}
         
-        ccFontBig = WatchUi.loadResource(Rez.Fonts.ccFont110px);
-        ccFont = WatchUi.loadResource(Rez.Fonts.ccFont50px);
-        ccFontSmall = WatchUi.loadResource(Rez.Fonts.ccFont40px);
-        
         garminFont = WatchUi.loadResource(Rez.Fonts.garminFont40px);
         garminFontSmall = WatchUi.loadResource(Rez.Fonts.garminFont30px);
         
         ForegroundColor = getApp().getProperty("ForegroundColor");
+        BackgroundColor = getApp().getProperty("BackgroundColor");
         
         view = View.findDrawableById("HeartIcon");
    	    view.setFont(garminFont);
        	view.setColor(Graphics.COLOR_RED);
-        view.setText("G");
+        view.setText("F");
         
         view = View.findDrawableById("StepsIcon");
    	    view.setFont(garminFont);
        	view.setColor(ForegroundColor);
-       	view.setText("I");
+       	view.setText("H");
 
     }
 
@@ -109,19 +133,28 @@ class WatchCLCView extends WatchUi.WatchFace {
         }
 
 		var info = ActivityMonitor.getInfo();
-		var steps = info.steps.toString();
-		//System.println("Steps taken: " + steps);
 
 		var distance = null;
-		if( System.getDeviceSettings().distanceUnits == System.UNIT_STATUTE ) {
-			distance = (info.distance/160934.0).format("%.2f")+" mi";
+		if (info has :distance && info.distance != null) {
+			if( System.getDeviceSettings().distanceUnits == System.UNIT_STATUTE ) {
+				distance = (info.distance/160934.0).format("%.2f")+" mi";
+			} else {
+				distance = (info.distance/(100000.0)).format("%.2f")+"km";
+			}
 		} else {
-			distance = (info.distance/(100000.0)).format("%.2f")+"km";
-		}		
+			distance = "--";
+		}
+		//System.println("distance: " + distance);
+
+		var steps = null;
+		if (info has :steps && info.steps != null) {
+			steps = info.steps.toString();
+		} else {
+			steps = "--";
+		}
 
 		var heart = null;
-		heart = Activity.getActivityInfo().currentHeartRate;
-		if(heart == null) {
+		if (ActivityMonitor has :getHeartRateHistory && ActivityMonitor.getHeartRateHistory(1, true) != null) {
 			var HRH = ActivityMonitor.getHeartRateHistory(1, true);
 			var HRS = HRH.next();
 			if(HRS != null && HRS.heartRate != ActivityMonitor.INVALID_HR_SAMPLE) {
@@ -132,13 +165,6 @@ class WatchCLCView extends WatchUi.WatchFace {
 			heart = heart.toString();
 		} else {
 			heart = "--";
-		}
-
-		var pressure = SensorHistory.getPressureHistory({:period => 1}).next().data;
-		if( pressure != null ) {
-			pressure = (pressure/100).format("%.1f")+" mbar";
-		} else {
-			pressure = "--";
 		}
 
         // Show Time
@@ -158,7 +184,7 @@ class WatchCLCView extends WatchUi.WatchFace {
         } else if ( !showSecs && showSecsPrev ) {
 	        view = View.findDrawableById("SecsLabel");
     		view.setFont(ccFont);
-   			view.setColor(Graphics.COLOR_BLACK);
+   			view.setColor(BackgroundColor);
    			view.setText("  ");
    			showSecsPrev = false;
         }
@@ -168,12 +194,12 @@ class WatchCLCView extends WatchUi.WatchFace {
 	        view = View.findDrawableById("BLEIcon");
    	    	view.setFont(garminFont);
        		view.setColor(Graphics.COLOR_BLUE);
-       		view.setText("D");
+       		view.setText("B");
        		BLEconnectedPrev = true;
 		} else if (!System.getDeviceSettings().phoneConnected && BLEconnectedPrev) {
 	        view = View.findDrawableById("BLEIcon");
    	    	view.setFont(ccFont);
-       		view.setColor(Graphics.COLOR_BLACK);
+       		view.setColor(BackgroundColor);
        		BLEconnectedPrev = false;
 		}
 
@@ -190,16 +216,21 @@ class WatchCLCView extends WatchUi.WatchFace {
 		        view.setText(batteryStr);
 
 		        view = View.findDrawableById("BatteryIcon");
-   	    		view.setFont(garminFont);
+				var shape = System.getDeviceSettings().screenShape;
+				if (shape == System.SCREEN_SHAPE_ROUND){
+	   	    		view.setFont(garminFont);
+				} else { // System.SCREEN_SHAPE_SEMI_ROUND & System.SCREEN_SHAPE_RECTANGLE
+	   	    		view.setFont(garminFontSmall);
+				}
        			view.setColor(Graphics.COLOR_RED);
-       			view.setText("C"); // "B" battery horizontal - "C" battery vertical
+       			view.setText("A");
     	    } else {
 				view.setColor(ForegroundColor);
 		        view.setText(batteryStr);
 
 		        view = View.findDrawableById("BatteryIcon");
-   	    		view.setFont(garminFont);
-       			view.setColor(Graphics.COLOR_BLACK);
+   	    		view.setFont(garminFontSmall);
+       			view.setColor(BackgroundColor);
     	    }
 	        //view.setText(Lang.format("$1$%", [battery.format("%3d")]));
 
@@ -236,37 +267,18 @@ class WatchCLCView extends WatchUi.WatchFace {
 	        view = View.findDrawableById("SleepIcon");
    	    	view.setFont(garminFont);
        		view.setColor(Graphics.COLOR_WHITE);
-       		view.setText("F");
+       		view.setText("D");
        		doNotDisturbPrev = true;
 
 		} else if (!System.getDeviceSettings().doNotDisturb && doNotDisturbPrev) {
 	        view = View.findDrawableById("SleepIcon");
    	    	view.setFont(ccFont);
-       		view.setColor(Graphics.COLOR_BLACK);
+       		view.setColor(BackgroundColor);
        		doNotDisturbPrev = false;
 		}
 
-        if (pressure != pressurePrev) {
-	        view = View.findDrawableById("PressureLabel");
-    	    view.setFont(ccFontSmall);
-        	view.setColor(ForegroundColor);
-	        view.setText(pressure);
-	        pressurePrev = pressure;
-        }
-
-		var datenow = Gregorian.info(Time.now(), Time.FORMAT_LONG);
-		var datenowStr = Lang.format("$1$ $2$ $3$", [datenow.day_of_week, datenow.day, datenow.month]);
-        if (datenowStr != datenowStrPrev) {
-	        view = View.findDrawableById("DateLabel");
-			if (screen.equals("240x240")) { // Fenix 6S
-    	    	view.setFont(ccFontSmall);
-			} else {
-	    	    view.setFont(ccFont);
-			}
-        	view.setColor(ForegroundColor);
-	        view.setText(datenowStr);
-	        datenowStrPrev = datenowStr;
-        }
+		printDF(1, "DF1", "DF1Icon", "DF1", df1Prev, df1valPrev, info);
+		printDF(2, "DF2", "DF2Icon", "DF2", df2Prev, df2valPrev, info);
 
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
@@ -294,5 +306,90 @@ class WatchCLCView extends WatchUi.WatchFace {
 	// updates every second
 	//function onPartialUpdate(dc as Dc) as Void {
  	//}
+
+	function printDF(dfnum, DFproperty, DFdrawIcon, DFdrawLabel, dfPrev, dfvalPrev, info) {
+
+        var df = getApp().getProperty(DFproperty);
+		var dfval = null;
+		//System.println("df: " + df);
+
+        if (df != dfPrev) {
+	        view = View.findDrawableById(DFdrawIcon);
+		   	view.setFont(garminFontSmall);
+   			view.setColor(BackgroundColor);
+
+			if (df == CALORIES) {
+    			view.setColor(Graphics.COLOR_RED);
+    			view.setText("C");
+
+			} else if (df == FLOORSCLIMBED) {
+    			view.setColor(ForegroundColor);
+	    		view.setText("E");
+
+			} else if (df == ACTIVEMINUTESWEEK) {
+    			view.setColor(ForegroundColor);
+	    		view.setText("G");
+
+			}
+			if (dfnum == 1){
+				df1Prev = df;
+			} else if (dfnum == 2){
+				df2Prev = df;
+			}
+		}
+
+		if (df == PRESSURE) {
+			if (SensorHistory has :getPressureHistory && SensorHistory.getPressureHistory({:period => 1}).next().data != null) {
+				dfval = SensorHistory.getPressureHistory({:period => 1}).next().data;
+				dfval = (dfval/100).format("%.1f")+" mbar";
+			}
+
+		} else if (df == CALORIES) {
+			if (info has :calories && info.calories != null) {
+				dfval = info.calories + " kCal";
+			}
+
+		} else if (df == FLOORSCLIMBED) {
+			if (info has :floorsClimbed && info.floorsClimbed != null) {
+				dfval = info.floorsClimbed.toString();
+			}
+
+		} else if (df == ACTIVEMINUTESWEEK) {
+			if (info has :activeMinutesWeek && info.activeMinutesWeek != null) {
+				dfval = info.activeMinutesWeek.total.toString();
+			}
+
+		} else if (df == DATE) {
+			var datenow = Gregorian.info(Time.now(), Time.FORMAT_LONG);
+			dfval = Lang.format("$1$ $2$ $3$", [datenow.day_of_week, datenow.day, datenow.month]);
+
+		} else if (df == EMPTY) {
+			dfval = "";
+		}
+		if (dfval == null) {
+				dfval = "--";
+		}
+		//System.println("dfval: " + dfval);
+
+        if (dfval != dfvalPrev) {
+			view = View.findDrawableById(DFdrawLabel);
+
+			if (dfnum == 2 && (screen.equals("260x260") || screen.equals("280x280"))) { // Fenix 6 or 6X
+	    	    view.setFont(ccFont);
+			} else {
+    	    	view.setFont(ccFontSmall);
+			}
+
+        	view.setColor(ForegroundColor);
+			view.setText(dfval.toString());
+			if (dfnum == 1){
+				df1valPrev = dfval;
+			} else if (dfnum == 2){
+				df1valPrev = dfval;
+			}
+        }
+
+	}
+
 
 }

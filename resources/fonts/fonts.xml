@@ -1,7 +1,12 @@
 <fonts>
+	<font id="ccFont30px" filename="ccFont30px.fnt"></font>
+	<font id="ccFont35px" filename="ccFont35px.fnt"></font>
 	<font id="ccFont40px" filename="ccFont40px.fnt"></font>
 	<font id="ccFont50px" filename="ccFont50px.fnt"></font>
-	<font id="ccFont110px" filename="ccFont110px.fnt"></font>	
+	<font id="ccFont90px" filename="ccFont90px.fnt" filter="0123456789:"></font>
+	<font id="ccFont100px" filename="ccFont100px.fnt" filter="0123456789:"></font>
+	<font id="ccFont105px" filename="ccFont105px.fnt" filter="0123456789:"></font>
+	<font id="ccFont110px" filename="ccFont110px.fnt" filter="0123456789:"></font>	
 	<font id="garminFont40px" filename="garminFont40px.fnt"></font>
 	<font id="garminFont30px" filename="garminFont30px.fnt"></font>
-</fonts>  
+</fonts>

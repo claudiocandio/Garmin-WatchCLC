@@ -22,8 +22,30 @@
         <settingConfig type="boolean" />
     </setting>
 
-    <setting propertyKey="@Properties.LowBattery" title="@Strings.LowBattery">
-        <settingConfig type="numeric" />
+    <setting propertyKey="@Properties.LowBattery" title="@Strings.LowBatteryTitle">
+        <settingConfig min="0" max="99" type="numeric" />
+    </setting>
+
+    <setting propertyKey="@Properties.DF1" title="@Strings.DF1Title">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.Calories</listEntry>
+            <listEntry value="1">@Strings.Pressure</listEntry>
+            <listEntry value="2">@Strings.FloorsClimbed</listEntry>
+            <listEntry value="3">@Strings.ActiveMinutesWeek</listEntry>
+            <listEntry value="4">@Strings.Date</listEntry>
+            <listEntry value="5">@Strings.Empty</listEntry>
+        </settingConfig>
+    </setting>
+
+    <setting propertyKey="@Properties.DF2" title="@Strings.DF2Title">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.Calories</listEntry>
+            <listEntry value="1">@Strings.Pressure</listEntry>
+            <listEntry value="2">@Strings.FloorsClimbed</listEntry>
+            <listEntry value="3">@Strings.ActiveMinutesWeek</listEntry>
+            <listEntry value="4">@Strings.Date</listEntry>
+            <listEntry value="5">@Strings.Empty</listEntry>
+        </settingConfig>
     </setting>
 
 </settings>
