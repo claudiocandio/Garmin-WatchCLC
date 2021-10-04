@@ -24,6 +24,29 @@
     <label id="DF2Icon" x="22%" y="82%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="DF2" x="center" y="83%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
 </layout>
+<layout id="Screen218x218">
+    <drawable class="Background" />
+    <label id="BatteryLabel" x="center" y="2%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="BatteryIcon" x="64%" y="0%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="BLEIcon" x="26%" y="3%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    
+    <label id="StepsLabel" x="39%" y="21%" justification="Graphics.TEXT_JUSTIFY_RIGHT"/>
+    <label id="StepsIcon" x="46%" y="16%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DistanceLabel" x="52%" y="21%" justification="Graphics.TEXT_JUSTIFY_LEFT"/>
+    
+    <label id="TimeLabel" x="center" y="30%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    
+    <label id="HeartIcon" x="10%" y="29%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="HeartLabel" x="10%" y="49%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    
+    <label id="SleepIcon" x="90%" y="29%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="SecsLabel" x="90%" y="49%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    
+    <label id="DF1Icon" x="22%" y="68%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF1" x="center" y="69%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF2Icon" x="22%" y="82%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF2" x="center" y="83%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+</layout>
 <layout id="Screen240x240">
     <drawable class="Background" />
     <label id="BatteryLabel" x="center" y="1%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>

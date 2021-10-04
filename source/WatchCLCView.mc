@@ -65,6 +65,12 @@ class WatchCLCView extends WatchUi.WatchFace {
     	    ccFont = WatchUi.loadResource(Rez.Fonts.ccFont40px);
         	ccFontSmall = WatchUi.loadResource(Rez.Fonts.ccFont30px);
 		
+		} else if (screen.equals("218x218")) {
+	        setLayout(Rez.Layouts.Screen218x218(dc));
+	        ccFontBig = WatchUi.loadResource(Rez.Fonts.ccFont90px);
+    	    ccFont = WatchUi.loadResource(Rez.Fonts.ccFont40px);
+        	ccFontSmall = WatchUi.loadResource(Rez.Fonts.ccFont30px);
+		
 		} else if (screen.equals("240x240")) { // Fenix 6S
 	        setLayout(Rez.Layouts.Screen240x240(dc));
 	        ccFontBig = WatchUi.loadResource(Rez.Fonts.ccFont100px);
@@ -171,6 +177,7 @@ class WatchCLCView extends WatchUi.WatchFace {
 		} else {
 			heart = "--";
 		}
+		//heart = "183";
 
         // Show Time
         view = View.findDrawableById("TimeLabel") as Text;
