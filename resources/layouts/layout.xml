@@ -19,9 +19,9 @@
     <label id="SleepIcon" x="90%" y="29%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="SecsLabel" x="90%" y="49%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
-    <label id="DF1Icon" x="22%" y="68%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF1Icon" x="25%" y="68%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="DF1" x="center" y="69%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
-    <label id="DF2Icon" x="22%" y="82%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF2Icon" x="25%" y="82%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="DF2" x="center" y="83%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
 </layout>
 <layout id="Screen218x218">
@@ -42,10 +42,10 @@
     <label id="SleepIcon" x="90%" y="29%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="SecsLabel" x="90%" y="49%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
-    <label id="DF1Icon" x="22%" y="68%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
-    <label id="DF1" x="center" y="69%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
-    <label id="DF2Icon" x="22%" y="82%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
-    <label id="DF2" x="center" y="83%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF1Icon" x="29%" y="67%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF1" x="center" y="68%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF2Icon" x="29%" y="81%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF2" x="center" y="82%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
 </layout>
 <layout id="Screen240x240">
     <drawable class="Background" />
@@ -65,9 +65,9 @@
     <label id="SleepIcon" x="89%" y="32%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="SecsLabel" x="89%" y="48%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
-    <label id="DF1Icon" x="22%" y="63%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF1Icon" x="24%" y="63%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="DF1" x="center" y="63%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
-    <label id="DF2Icon" x="22%" y="75%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF2Icon" x="24%" y="75%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="DF2" x="center" y="75%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
 </layout>
 <layout id="Screen260x260">
@@ -88,10 +88,10 @@
     <label id="SleepIcon" x="89%" y="33%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="SecsLabel" x="89%" y="47%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
-    <label id="DF1Icon" x="22%" y="64%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
-    <label id="DF1" x="center" y="63%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
-    <label id="DF2Icon" x="22%" y="76%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
-    <label id="DF2" x="center" y="75%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF1Icon" x="26%" y="65%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF1" x="center" y="62%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF2Icon" x="26%" y="78%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF2" x="center" y="74%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
 </layout>
 <layout id="Screen280x280">
     <drawable class="Background" />
@@ -111,9 +111,9 @@
     <label id="SleepIcon" x="89%" y="33%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="SecsLabel" x="89%" y="47%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
-    <label id="DF1Icon" x="22%" y="64%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF1Icon" x="26%" y="65%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="DF1" x="center" y="63%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
-    <label id="DF2Icon" x="22%" y="76%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
-    <label id="DF2" x="center" y="75%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF2Icon" x="26%" y="78%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF2" x="center" y="74%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
 </layout>
 </layouts>

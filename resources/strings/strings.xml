@@ -19,8 +19,12 @@
     <string id="DF2Title">Data Field 2</string>
     <string id="Calories">Calories</string>
     <string id="Pressure">Pressure</string>
+    <string id="Altitude">Altitude</string>
     <string id="FloorsClimbed">Floors Climbed</string>
+    <string id="FloorsDescended">Floors Descended</string>
+    <string id="ActiveMinutesDay">Active Minutes Day</string>
     <string id="ActiveMinutesWeek">Active Minutes Week</string>
+    <string id="ActiveMinutesWeekGoal">Active Minutes Week Goal</string>
     <string id="Date">Date</string>
     <string id="Empty">Empty</string>
 

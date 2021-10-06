@@ -4,6 +4,7 @@ import Toybox.Lang;
 import Toybox.System;
 import Toybox.WatchUi;
 
+using Toybox.Activity;
 using Toybox.ActivityMonitor;
 using Toybox.SensorHistory;
 using Toybox.Time.Gregorian;
@@ -41,13 +42,31 @@ class WatchCLCView extends WatchUi.WatchFace {
 
 	enum {
 		CALORIES,
-		PRESSURE,
-		FLOORSCLIMBED,
-		ACTIVEMINUTESWEEK,
 		DATE,
+		PRESSURE,
+		ALTITUDE,
+		FLOORSCLIMBED,
+		FLOORSDESCENDED,
+		ACTIVEMINUTESDAY,
+		ACTIVEMINUTESWEEK,
+		ACTIVEMINUTESWEEKGOAL,
 		EMPTY
 	}
-	
+
+	enum {
+		STEPSICON = "A",
+		ACTIVEMINUTESWEEKGOALICON = "B",
+		ALTITUDEICON = "C",
+		FLOORSCLIMBEDICON = "D",
+		FLOORSDESCENDEDICON = "E",
+		BATTERYICON = "F",
+		BLEICON = "G",
+		CALORIESICON = "H",
+		SLEEPICON = "I",
+		HEARTICON = "J",
+		ACTIVEMINUTESICON = "K"
+	}
+
     function initialize() {
         WatchFace.initialize();
     }
@@ -103,12 +122,12 @@ class WatchCLCView extends WatchUi.WatchFace {
         view = View.findDrawableById("HeartIcon");
    	    view.setFont(garminFont);
        	view.setColor(Graphics.COLOR_RED);
-        view.setText("F");
+        view.setText(HEARTICON);
         
         view = View.findDrawableById("StepsIcon");
    	    view.setFont(garminFont);
        	view.setColor(ForegroundColor);
-       	view.setText("H");
+       	view.setText(STEPSICON);
 
     }
 
@@ -206,7 +225,7 @@ class WatchCLCView extends WatchUi.WatchFace {
 	        view = View.findDrawableById("BLEIcon");
    	    	view.setFont(garminFont);
        		view.setColor(Graphics.COLOR_BLUE);
-       		view.setText("B");
+       		view.setText(BLEICON);
        		BLEconnectedPrev = true;
 		} else if (!System.getDeviceSettings().phoneConnected && BLEconnectedPrev) {
 	        view = View.findDrawableById("BLEIcon");
@@ -235,7 +254,7 @@ class WatchCLCView extends WatchUi.WatchFace {
 	   	    		view.setFont(garminFontSmall);
 				}
        			view.setColor(Graphics.COLOR_RED);
-       			view.setText("A");
+       			view.setText(BATTERYICON);
     	    } else {
 				view.setColor(ForegroundColor);
 		        view.setText(batteryStr);
@@ -279,7 +298,7 @@ class WatchCLCView extends WatchUi.WatchFace {
 	        view = View.findDrawableById("SleepIcon");
    	    	view.setFont(garminFont);
        		view.setColor(Graphics.COLOR_WHITE);
-       		view.setText("D");
+       		view.setText(SLEEPICON);
        		doNotDisturbPrev = true;
 
 		} else if (!System.getDeviceSettings().doNotDisturb && doNotDisturbPrev) {
@@ -332,15 +351,27 @@ class WatchCLCView extends WatchUi.WatchFace {
 
 			if (df == CALORIES) {
     			view.setColor(Graphics.COLOR_RED);
-    			view.setText("C");
+    			view.setText(CALORIESICON);
+
+			} else if (df == ALTITUDE) {
+    			view.setColor(ForegroundColor);
+	    		view.setText(ALTITUDEICON);
 
 			} else if (df == FLOORSCLIMBED) {
     			view.setColor(ForegroundColor);
-	    		view.setText("E");
+	    		view.setText(FLOORSCLIMBEDICON);
 
-			} else if (df == ACTIVEMINUTESWEEK) {
+			} else if (df == FLOORSDESCENDED) {
     			view.setColor(ForegroundColor);
-	    		view.setText("G");
+	    		view.setText(FLOORSDESCENDEDICON);
+
+			} else if (df == ACTIVEMINUTESWEEK || df == ACTIVEMINUTESDAY) {
+    			view.setColor(ForegroundColor);
+	    		view.setText(ACTIVEMINUTESICON);
+
+			} else if (df == ACTIVEMINUTESWEEKGOAL) {
+    			view.setColor(ForegroundColor);
+	    		view.setText(ACTIVEMINUTESWEEKGOALICON);
 
 			}
 			if (dfnum == 1){
@@ -353,12 +384,13 @@ class WatchCLCView extends WatchUi.WatchFace {
 		if (df == PRESSURE) {
 			if (SensorHistory has :getPressureHistory && SensorHistory.getPressureHistory({:period => 1}).next().data != null) {
 				dfval = SensorHistory.getPressureHistory({:period => 1}).next().data;
-				dfval = (dfval/100).format("%.1f")+" mbar";
+				dfval = (dfval/100).format("%.1f")+" bar";
 			}
+			//dfval ="1024.5 mbar";
 
 		} else if (df == CALORIES) {
 			if (info has :calories && info.calories != null) {
-				dfval = info.calories + " kCal";
+				dfval = info.calories;
 			}
 
 		} else if (df == FLOORSCLIMBED) {
@@ -366,9 +398,34 @@ class WatchCLCView extends WatchUi.WatchFace {
 				dfval = info.floorsClimbed.toString();
 			}
 
+		} else if (df == FLOORSDESCENDED) {
+			if (info has :floorsDescended && info.floorsDescended != null) {
+				dfval = info.floorsDescended.toString();
+			}
+
+		} else if (df == ACTIVEMINUTESDAY) {
+			if (info has :activeMinutesDay && info.activeMinutesDay != null) {
+				dfval = info.activeMinutesDay.total.toString();
+			}
+
 		} else if (df == ACTIVEMINUTESWEEK) {
 			if (info has :activeMinutesWeek && info.activeMinutesWeek != null) {
 				dfval = info.activeMinutesWeek.total.toString();
+			}
+
+		} else if (df == ACTIVEMINUTESWEEKGOAL) {
+			if (info has :activeMinutesWeekGoal && info.activeMinutesWeekGoal != null) {
+				dfval = info.activeMinutesWeekGoal.toString();
+			}
+
+		} else if (df == ALTITUDE) {
+			if (Activity has :getActivityInfo && Activity.getActivityInfo().altitude != null) {
+				dfval = Activity.getActivityInfo().altitude;
+				if( System.getDeviceSettings().elevationUnits == System.UNIT_METRIC ) {
+					dfval = (dfval).format("%.0f")+"m";
+				} else {
+					dfval = (dfval*3.28084).format("%.f")+"ft";
+				}
 			}
 
 		} else if (df == DATE) {

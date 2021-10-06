@@ -1,3 +1,8 @@
+<!--
+DF1 defaults to Calories = 0
+DF2 defaults to Date = 1
+check enum
+-->
 <properties>
 
     <property id="BackgroundColor" type="number">0x000000</property>
@@ -5,6 +10,6 @@
     <property id="UseMilitaryFormat" type="boolean">false</property>
     <property id="LowBattery" type="number">20</property>
     <property id="DF1" type="number">0</property>
-    <property id="DF2" type="number">4</property>
+    <property id="DF2" type="number">1</property>
 
 </properties>

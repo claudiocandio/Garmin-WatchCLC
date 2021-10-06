@@ -29,22 +29,30 @@
     <setting propertyKey="@Properties.DF1" title="@Strings.DF1Title">
         <settingConfig type="list">
             <listEntry value="0">@Strings.Calories</listEntry>
-            <listEntry value="1">@Strings.Pressure</listEntry>
-            <listEntry value="2">@Strings.FloorsClimbed</listEntry>
-            <listEntry value="3">@Strings.ActiveMinutesWeek</listEntry>
-            <listEntry value="4">@Strings.Date</listEntry>
-            <listEntry value="5">@Strings.Empty</listEntry>
+            <listEntry value="1">@Strings.Date</listEntry>
+            <listEntry value="2">@Strings.Pressure</listEntry>
+            <listEntry value="3">@Strings.Altitude</listEntry>
+            <listEntry value="4">@Strings.FloorsClimbed</listEntry>
+            <listEntry value="5">@Strings.FloorsDescended</listEntry>
+            <listEntry value="6">@Strings.ActiveMinutesDay</listEntry>
+            <listEntry value="7">@Strings.ActiveMinutesWeek</listEntry>
+            <listEntry value="8">@Strings.ActiveMinutesWeekGoal</listEntry>
+            <listEntry value="9">@Strings.Empty</listEntry>
         </settingConfig>
     </setting>
 
     <setting propertyKey="@Properties.DF2" title="@Strings.DF2Title">
         <settingConfig type="list">
             <listEntry value="0">@Strings.Calories</listEntry>
-            <listEntry value="1">@Strings.Pressure</listEntry>
-            <listEntry value="2">@Strings.FloorsClimbed</listEntry>
-            <listEntry value="3">@Strings.ActiveMinutesWeek</listEntry>
-            <listEntry value="4">@Strings.Date</listEntry>
-            <listEntry value="5">@Strings.Empty</listEntry>
+            <listEntry value="1">@Strings.Date</listEntry>
+            <listEntry value="2">@Strings.Pressure</listEntry>
+            <listEntry value="3">@Strings.Altitude</listEntry>
+            <listEntry value="4">@Strings.FloorsClimbed</listEntry>
+            <listEntry value="5">@Strings.FloorsDescended</listEntry>
+            <listEntry value="6">@Strings.ActiveMinutesDay</listEntry>
+            <listEntry value="7">@Strings.ActiveMinutesWeek</listEntry>
+            <listEntry value="8">@Strings.ActiveMinutesWeekGoal</listEntry>
+            <listEntry value="9">@Strings.Empty</listEntry>
         </settingConfig>
     </setting>
 

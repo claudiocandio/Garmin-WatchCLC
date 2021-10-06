@@ -1,0 +1,37 @@
+CHANGELOG
+
+0.0.10
+- Data Field 1 & 2
+   Calories (default for Data Field 1)
+   Date (default for Data Field 2)
+   Pressure
+   Altitude
+   Floors Climbed
+   Floors Descended
+   Active Minutes Day
+   Active Minutes Week
+   Active Minutes Week Goal
+   Empty
+
+0.0.9
+- just added a few compatible watches, only tested with the simulator.
+
+0.0.8
+- fix heart rate on gesture
+
+0.0.7
+- Added Forerunner 735xt
+- Changed the Pressure and Date fields with 2 configurable Data Fields:
+   Calories
+   Pressure
+   Floors Climbed
+   Active Minutes Week
+   Date
+   Empty
+- Data Field 1 default to Calories.
+- Data Field 2 default to Date.
+- There were quite a few changes in the code, hope all works ok.
+
+0.0.6
+- Added more compatible watches but just tested them using the simulator, I'm not sure they are all ok.
+
