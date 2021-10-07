@@ -6,19 +6,31 @@
 
 This is the Watch Face I'm using for my Garmin Fenix 6 Sapphire.
 
-I also added more compatible watches but just tested them using the simulator, I'm not sure they are all ok.
-
+I also added more compatible watches but just tested them using the simulator, I'm not sure they are all ok.  
 This Watch Face has a few configuration options I like and it may change in the future.
+
+**Garmin IQ Store:** <https://apps.garmin.com/en-US/apps/8a17a33d-da70-4c6b-a53e-de51537c9c24>
 
 <img src="resources/images/WatchCLC1.png" width="50%">
 
-Garmin IQ Store: <https://apps.garmin.com/en-US/apps/8a17a33d-da70-4c6b-a53e-de51537c9c24>
+### Configurable Data Field 1 & 2
+
+&emsp;Calories  
+&emsp;Date  
+&emsp;Pressure  
+&emsp;Altitude  
+&emsp;Floors Climbed  
+&emsp;Floors Descended  
+&emsp;Active Minutes Day  
+&emsp;Active Minutes Week  
+&emsp;Active Minutes Week Goal  
+&emsp;Empty  
 
 ### Import this project with Eclipse IDE for Java
 
 ```bash
-$ git clone https://github.com/claudiocandio/Garmin-WatchCLC
-$ mv Garmin-WatchCLC WatchCLC
+git clone https://github.com/claudiocandio/Garmin-WatchCLC
+mv Garmin-WatchCLC WatchCLC
 ```
 
 Open Eclipse and import the project.

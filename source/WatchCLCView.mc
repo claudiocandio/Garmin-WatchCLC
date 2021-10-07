@@ -17,14 +17,16 @@ class WatchCLCView extends WatchUi.WatchFace {
 	var ccFont = null;
 	var ccFontSmall = null;
 	
-	var ForegroundColor = null as Number;
-	var BackgroundColor = null as Number;
-
 	var garminFont = null;
 	var garminFontSmall = null;
 	
-	var BLEconnectedPrev = false;
-	var doNotDisturbPrev = false;
+	var ForegroundColor = null as Number;
+	var BackgroundColor = null as Number;
+
+	var ForegroundColorPrev = null as Number;
+	var BackgroundColorPrev = null as Number;
+	var BLEconnectedPrev = true;
+	var doNotDisturbPrev = true;
 	var heartPrev = null as Text;
 	var stepsPrev = null as Text;
 	var distancePrev = null as Text;
@@ -78,13 +80,13 @@ class WatchCLCView extends WatchUi.WatchFace {
 		screen = System.getDeviceSettings().screenWidth + "x" + System.getDeviceSettings().screenHeight;
 		screen = screen.toString();
 
-		if (screen.equals("215x180")) {
+		if (screen.equals("215x180")) { // Forerunner 735xt
 	        setLayout(Rez.Layouts.Screen215x180(dc));
 	        ccFontBig = WatchUi.loadResource(Rez.Fonts.ccFont90px);
     	    ccFont = WatchUi.loadResource(Rez.Fonts.ccFont40px);
         	ccFontSmall = WatchUi.loadResource(Rez.Fonts.ccFont30px);
 		
-		} else if (screen.equals("218x218")) {
+		} else if (screen.equals("218x218")) { // Fenix 5S
 	        setLayout(Rez.Layouts.Screen218x218(dc));
 	        ccFontBig = WatchUi.loadResource(Rez.Fonts.ccFont90px);
     	    ccFont = WatchUi.loadResource(Rez.Fonts.ccFont40px);
@@ -116,19 +118,11 @@ class WatchCLCView extends WatchUi.WatchFace {
         garminFont = WatchUi.loadResource(Rez.Fonts.garminFont40px);
         garminFontSmall = WatchUi.loadResource(Rez.Fonts.garminFont30px);
         
-        ForegroundColor = getApp().getProperty("ForegroundColor");
-        BackgroundColor = getApp().getProperty("BackgroundColor");
-        
         view = View.findDrawableById("HeartIcon");
    	    view.setFont(garminFont);
        	view.setColor(Graphics.COLOR_RED);
         view.setText(HEARTICON);
         
-        view = View.findDrawableById("StepsIcon");
-   	    view.setFont(garminFont);
-       	view.setColor(ForegroundColor);
-       	view.setText(STEPSICON);
-
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -141,6 +135,31 @@ class WatchCLCView extends WatchUi.WatchFace {
     function onUpdate(dc as Dc) as Void {
 
         ForegroundColor = getApp().getProperty("ForegroundColor");
+        BackgroundColor = getApp().getProperty("BackgroundColor");
+
+		if(ForegroundColor != ForegroundColorPrev || BackgroundColor != BackgroundColorPrev){
+	        view = View.findDrawableById("StepsIcon");
+   	    	view.setFont(garminFont);
+	       	view.setColor(ForegroundColor);
+       		view.setText(STEPSICON);
+
+			// to refresh all
+			BLEconnectedPrev = BLEconnectedPrev ? false : true;
+			doNotDisturbPrev = doNotDisturbPrev ? false : true;
+			heartPrev = null;
+			stepsPrev = null;
+			distancePrev = null;
+			batteryPrev = null;
+			batteryLowPrev = null;
+			df1Prev = null;
+			df1valPrev = null;
+			df2Prev = null;
+			df2valPrev = null;
+			datenowStrPrev = null;
+
+			ForegroundColorPrev = ForegroundColor;
+			BackgroundColorPrev = BackgroundColor;
+		}
 
         // Get the current time and format it correctly
         var timeFormat = "$1$:$2$";
@@ -212,11 +231,10 @@ class WatchCLCView extends WatchUi.WatchFace {
     	    view.setColor(ForegroundColor);
         	view.setText(Lang.format(".$1$", [clockTime.sec.format("%02d")]));
         	showSecsPrev = true;
-        } else if ( !showSecs && showSecsPrev ) {
+        } else if ( showSecsPrev ) {
 	        view = View.findDrawableById("SecsLabel");
     		view.setFont(ccFont);
    			view.setColor(BackgroundColor);
-   			view.setText("  ");
    			showSecsPrev = false;
         }
 
@@ -297,7 +315,7 @@ class WatchCLCView extends WatchUi.WatchFace {
 		if ( System.getDeviceSettings().doNotDisturb && !doNotDisturbPrev ) {
 	        view = View.findDrawableById("SleepIcon");
    	    	view.setFont(garminFont);
-       		view.setColor(Graphics.COLOR_WHITE);
+       		view.setColor(ForegroundColor);
        		view.setText(SLEEPICON);
        		doNotDisturbPrev = true;
 
