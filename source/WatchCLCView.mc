@@ -27,6 +27,7 @@ class WatchCLCView extends WatchUi.WatchFace {
 	var BackgroundColorPrev = null as Number;
 	var BLEconnectedPrev = true;
 	var doNotDisturbPrev = true;
+	var notificationPrev = true;
 	var heartPrev = null as Text;
 	var stepsPrev = null as Text;
 	var distancePrev = null as Text;
@@ -56,17 +57,18 @@ class WatchCLCView extends WatchUi.WatchFace {
 	}
 
 	enum {
-		STEPSICON = "A",
-		ACTIVEMINUTESWEEKGOALICON = "B",
-		ALTITUDEICON = "C",
-		FLOORSCLIMBEDICON = "D",
-		FLOORSDESCENDEDICON = "E",
-		BATTERYICON = "F",
-		BLEICON = "G",
-		CALORIESICON = "H",
-		SLEEPICON = "I",
-		HEARTICON = "J",
-		ACTIVEMINUTESICON = "K"
+		NOTIFICATIONICON = "A",
+		STEPSICON = "B",
+		ACTIVEMINUTESWEEKGOALICON = "C",
+		ALTITUDEICON = "D",
+		FLOORSCLIMBEDICON = "E",
+		FLOORSDESCENDEDICON = "F",
+		BATTERYICON = "G",
+		BLEICON = "H",
+		CALORIESICON = "I",
+		SLEEPICON = "J",
+		HEARTICON = "K",
+		ACTIVEMINUTESICON = "L"
 	}
 
     function initialize() {
@@ -146,6 +148,7 @@ class WatchCLCView extends WatchUi.WatchFace {
 			// to refresh all
 			BLEconnectedPrev = BLEconnectedPrev ? false : true;
 			doNotDisturbPrev = doNotDisturbPrev ? false : true;
+			notificationPrev = notificationPrev ? false : true;
 			heartPrev = null;
 			stepsPrev = null;
 			distancePrev = null;
@@ -326,6 +329,30 @@ class WatchCLCView extends WatchUi.WatchFace {
        		doNotDisturbPrev = false;
 		}
 
+ 		// Show do Notification icon
+		if (getApp().getProperty("UseNotification")) {
+			if ( System.getDeviceSettings().notificationCount > 0 && !notificationPrev ) {
+				view = View.findDrawableById("NotificationIcon");
+				view.setFont(garminFont);
+				view.setColor(Graphics.COLOR_GREEN);
+				view.setText(NOTIFICATIONICON);
+				notificationPrev = true;
+
+			} else if ( System.getDeviceSettings().notificationCount == 0 && notificationPrev ) {
+				view = View.findDrawableById("NotificationIcon");
+				view.setFont(ccFont);
+				view.setColor(BackgroundColor);
+				notificationPrev = false;
+			}
+		} else {
+			if (notificationPrev) {
+				view = View.findDrawableById("NotificationIcon");
+				view.setFont(ccFont);
+				view.setColor(BackgroundColor);
+				notificationPrev = false;
+			}
+		}
+
 		printDF(1, "DF1", "DF1Icon", "DF1", df1Prev, df1valPrev, info);
 		printDF(2, "DF2", "DF2Icon", "DF2", df2Prev, df2valPrev, info);
 
@@ -402,9 +429,9 @@ class WatchCLCView extends WatchUi.WatchFace {
 		if (df == PRESSURE) {
 			if (SensorHistory has :getPressureHistory && SensorHistory.getPressureHistory({:period => 1}).next().data != null) {
 				dfval = SensorHistory.getPressureHistory({:period => 1}).next().data;
-				dfval = (dfval/100).format("%.1f")+" bar";
+				dfval = (dfval/100).format("%.1f")+" mb";
 			}
-			//dfval ="1024.5 mbar";
+			//dfval ="1024.5 mb";
 
 		} else if (df == CALORIES) {
 			if (info has :calories && info.calories != null) {

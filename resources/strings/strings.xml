@@ -13,6 +13,7 @@
     <string id="ColorRed">Red</string>
 
     <string id="MilitaryFormatTitle">Military Format for 24 Hour Time</string>
+    <string id="NotificationTitle">Enable Notification Icon</string>
     <string id="LowBatteryTitle">Low Battery %</string>
 
     <string id="DF1Title">Data Field 1</string>

@@ -1,5 +1,12 @@
 CHANGELOG
 
+1.0.2
+- Add notification icon, it can be enabled/disabled using the watch face settings
+- Update Connect IQ SDK to 4.0.6
+
+1.0.1
+- Fix some colors
+
 0.0.10
 - Data Field 1 & 2
    Calories (default for Data Field 1)
@@ -12,9 +19,6 @@ CHANGELOG
    Active Minutes Week
    Active Minutes Week Goal
    Empty
-
-1.0.1
-- Fix some colors
 
 0.0.9
 - Just added a few compatible watches, only tested with the simulator

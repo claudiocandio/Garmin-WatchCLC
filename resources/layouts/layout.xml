@@ -18,6 +18,8 @@
     
     <label id="SleepIcon" x="90%" y="29%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="SecsLabel" x="90%" y="49%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+
+    <label id="NotificationIcon" x="83%" y="69%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
     <label id="DF1Icon" x="25%" y="68%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="DF1" x="center" y="69%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
@@ -41,6 +43,8 @@
     
     <label id="SleepIcon" x="90%" y="29%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="SecsLabel" x="90%" y="49%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+
+    <label id="NotificationIcon" x="82%" y="68%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
     <label id="DF1Icon" x="29%" y="67%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="DF1" x="center" y="68%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
@@ -64,6 +68,8 @@
     
     <label id="SleepIcon" x="89%" y="32%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="SecsLabel" x="89%" y="48%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+
+    <label id="NotificationIcon" x="86%" y="66%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
     <label id="DF1Icon" x="24%" y="63%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="DF1" x="center" y="63%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
@@ -87,6 +93,8 @@
     
     <label id="SleepIcon" x="89%" y="33%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="SecsLabel" x="89%" y="47%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+
+    <label id="NotificationIcon" x="86%" y="66%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
     <label id="DF1Icon" x="26%" y="65%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="DF1" x="center" y="62%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
@@ -110,7 +118,9 @@
     
     <label id="SleepIcon" x="89%" y="33%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="SecsLabel" x="89%" y="47%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
-    
+
+    <label id="NotificationIcon" x="86%" y="66%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+
     <label id="DF1Icon" x="26%" y="65%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="DF1" x="center" y="63%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="DF2Icon" x="26%" y="78%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>

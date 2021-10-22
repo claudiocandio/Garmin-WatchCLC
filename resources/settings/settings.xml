@@ -22,6 +22,10 @@
         <settingConfig type="boolean" />
     </setting>
 
+    <setting propertyKey="@Properties.UseNotification" title="@Strings.NotificationTitle">
+        <settingConfig type="boolean" />
+    </setting>
+
     <setting propertyKey="@Properties.LowBattery" title="@Strings.LowBatteryTitle">
         <settingConfig min="0" max="99" type="numeric" />
     </setting>
