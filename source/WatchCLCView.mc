@@ -1,3 +1,10 @@
+/*
+manifest.xml
+ WatchCLC clca prod	App UUID ec609625-0efa-4d2d-8746-e20998c4a5a7
+ WatchCLC clca Test	App UUID 3bcd23c4-073a-44b3-a59a-88e60c355e22
+ WatchCLC frpi Test	App UUID 679845df-a0bd-45be-ba6e-313c3d99ec83
+*/
+
 import Toybox.Application;
 import Toybox.Graphics;
 import Toybox.Lang;
@@ -43,6 +50,17 @@ class WatchCLCView extends WatchUi.WatchFace {
 	var showSecs = true;
 	var showSecsPrev = false;
 
+	var cando1hz = false;
+
+	var SecsClip = false;
+	var SecsAlwaysOnPrev = false;
+	var doNotDisturb = false;
+
+	var x = 0 as Integer;
+	var y = 0 as Integer;
+	var h = 0 as Integer;
+	var w = 0 as Integer;
+
 	enum {
 		CALORIES,
 		DATE,
@@ -73,6 +91,8 @@ class WatchCLCView extends WatchUi.WatchFace {
 
     function initialize() {
         WatchFace.initialize();
+		// see if 1hz is possible
+		cando1hz = ( Toybox.WatchUi.WatchFace has :onPartialUpdate );
     }
 
     // Load your resources here
@@ -136,6 +156,33 @@ class WatchCLCView extends WatchUi.WatchFace {
     // Update the view
     function onUpdate(dc as Dc) as Void {
 
+		doNotDisturb = System.getDeviceSettings().doNotDisturb;
+
+		if ( cando1hz ){
+			//System.println("x=" + x + " y=" + y + " h=" + h + " w=" + w);
+			if(SecsClip){
+				dc.clear();
+				dc.clearClip();
+				SecsClip = false;
+			}
+			if ( getApp().getProperty("SecsAlwaysOn") ) {
+				if (doNotDisturb){
+					showSecs = false;
+				} else {
+					showSecs = true;
+				}
+				SecsAlwaysOnPrev = true;
+			} else if (SecsAlwaysOnPrev) {
+				showSecs = false;
+				SecsAlwaysOnPrev = false;
+			}
+			/*
+			System.println("Yes I can do 1hz");
+		} else {
+			System.println("No I cannot do 1hz");
+			*/
+		}
+
         ForegroundColor = getApp().getProperty("ForegroundColor");
         BackgroundColor = getApp().getProperty("BackgroundColor");
 
@@ -159,6 +206,7 @@ class WatchCLCView extends WatchUi.WatchFace {
 			df2Prev = null;
 			df2valPrev = null;
 			datenowStrPrev = null;
+			showSecsPrev = true;
 
 			ForegroundColorPrev = ForegroundColor;
 			BackgroundColorPrev = BackgroundColor;
@@ -221,25 +269,25 @@ class WatchCLCView extends WatchUi.WatchFace {
 		//heart = "183";
 
         // Show Time
-        view = View.findDrawableById("TimeLabel") as Text;
+        view = View.findDrawableById("TimeLabel");
         view.setFont(ccFontBig);
         view.setColor(ForegroundColor);
         view.setText(Lang.format(timeFormat, [hours, clockTime.min.format("%02d")]));
 		//view.setText("22:33");
 		
         // Show Secs
-        if ( showSecs ) {
-        	view = View.findDrawableById("SecsLabel") as Text;
-	        view.setFont(ccFont);
-    	    view.setColor(ForegroundColor);
-        	view.setText(Lang.format(".$1$", [clockTime.sec.format("%02d")]));
-        	showSecsPrev = true;
-        } else if ( showSecsPrev ) {
-	        view = View.findDrawableById("SecsLabel");
-    		view.setFont(ccFont);
-   			view.setColor(BackgroundColor);
-   			showSecsPrev = false;
-        }
+		if ( showSecs ) {
+			view = View.findDrawableById("SecsLabel");
+			view.setFont(ccFont);
+			view.setColor(ForegroundColor);
+			view.setText(Lang.format(".$1$", [clockTime.sec.format("%02d")]));
+			showSecsPrev = true;
+		} else if ( showSecsPrev ) {
+			view = View.findDrawableById("SecsLabel");
+			view.setFont(ccFont);
+			view.setColor(BackgroundColor);
+			showSecsPrev = false;
+		}
 
  		// Show bluetooth icon
 		if ( System.getDeviceSettings().phoneConnected && !BLEconnectedPrev ) {
@@ -315,14 +363,14 @@ class WatchCLCView extends WatchUi.WatchFace {
         }
 
  		// Show do not disturb icon Moon icon
-		if ( System.getDeviceSettings().doNotDisturb && !doNotDisturbPrev ) {
+		if ( doNotDisturb && !doNotDisturbPrev ) {
 	        view = View.findDrawableById("SleepIcon");
    	    	view.setFont(garminFont);
        		view.setColor(ForegroundColor);
        		view.setText(SLEEPICON);
        		doNotDisturbPrev = true;
 
-		} else if (!System.getDeviceSettings().doNotDisturb && doNotDisturbPrev) {
+		} else if (!doNotDisturb && doNotDisturbPrev) {
 	        view = View.findDrawableById("SleepIcon");
    	    	view.setFont(ccFont);
        		view.setColor(BackgroundColor);
@@ -357,7 +405,7 @@ class WatchCLCView extends WatchUi.WatchFace {
 		printDF(2, "DF2", "DF2Icon", "DF2", df2Prev, df2valPrev, info);
 
         // Call the parent onUpdate function to redraw the layout
-        View.onUpdate(dc);
+		View.onUpdate(dc);
 
     }
 
@@ -379,9 +427,46 @@ class WatchCLCView extends WatchUi.WatchFace {
 		WatchUi.requestUpdate();    
     }
 
-	// updates every second
-	//function onPartialUpdate(dc as Dc) as Void {
- 	//}
+	// Updates every second
+	function onPartialUpdate(dc as Dc) as Void {
+
+		if ( showSecs ) {
+
+			if (!SecsClip) {
+				setSecsClip(dc, Graphics.TEXT_JUSTIFY_CENTER);
+			}
+	     	dc.setColor(ForegroundColor,BackgroundColor);
+			dc.clear();
+     		dc.drawText(x, y, ccFont,Lang.format(".$1$", [System.getClockTime().sec.format("%02d")]), Graphics.TEXT_JUSTIFY_CENTER);
+
+		}
+
+ 	}
+
+	function setSecsClip(dc as Dc, justify as Integer) as Void {
+		view = View.findDrawableById("SecsLabel");
+		x = view.locX;
+		y = view.locY;
+		h = view.height;
+		w = view.width+1;
+		var x1 = 0;
+		if ( justify == Graphics.TEXT_JUSTIFY_CENTER) {
+			x1 = x - (w/2);
+			x1 = x1 < 0 ? 0 : x1;
+			dc.setClip(x1, y, w, h);
+		} else if (justify == Graphics.TEXT_JUSTIFY_RIGHT) {
+			x1 = x - w;
+			x1 = x1 < 0 ? 0 : x1;
+			dc.setClip(x1, y, w, h);
+		} else { // Graphics.TEXT_JUSTIFY_LEFT
+			dc.setClip(x, y, w, h);
+		}
+		dc.setColor(BackgroundColor, BackgroundColor);
+		dc.clear();
+		
+		showSecsPrev = true;
+		SecsClip = true;
+	}
 
 	function printDF(dfnum, DFproperty, DFdrawIcon, DFdrawLabel, dfPrev, dfvalPrev, info) {
 
@@ -505,5 +590,22 @@ class WatchCLCView extends WatchUi.WatchFace {
 
 	}
 
+}
 
+class WatchCLCViewDelegate extends WatchUi.WatchFaceDelegate
+{
+	function initialize() {
+		WatchFaceDelegate.initialize();	
+	}
+
+    function onPowerBudgetExceeded(powerInfo as WatchUi.WatchFacePowerInfo) {
+        //System.println( "Average execution time: " + powerInfo.executionTimeAverage );
+        //System.println( "Allowed execution time: " + powerInfo.executionTimeLimit );
+
+        cando1hz = false;
+		if ( getApp().getProperty("SecsAlwaysOn") ) {
+			getApp().setProperty("SecsAlwaysOn", false);
+		}
+
+    }
 }

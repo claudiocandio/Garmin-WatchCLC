@@ -16,9 +16,10 @@ I also added more compatible watches but just tested them using the simulator, I
 
 &emsp;- Background Color  
 &emsp;- Foreground Color  
+&emsp;- Low Battery %  
 &emsp;- Enable/Disable: Military Format Time  
 &emsp;- Enable/Disable: Notification Icon  
-&emsp;- Low Battery %  
+&emsp;- Enable/Disable: Seconds Always On  
 &emsp;- Data Field 1 & 2  
 &emsp;&emsp;Calories  
 &emsp;&emsp;Date  

@@ -92,7 +92,7 @@
     <label id="HeartLabel" x="10%" y="47%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
     <label id="SleepIcon" x="89%" y="33%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
-    <label id="SecsLabel" x="89%" y="47%" text="   " justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="SecsLabel" x="89%" y="47%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
 
     <label id="NotificationIcon" x="86%" y="66%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     

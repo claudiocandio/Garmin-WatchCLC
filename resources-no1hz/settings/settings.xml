@@ -60,8 +60,4 @@
         </settingConfig>
     </setting>
 
-    <setting propertyKey="@Properties.SecsAlwaysOn" title="@Strings.SecsAlwaysOnTitle">
-        <settingConfig type="boolean" />
-    </setting>
-
 </settings>
