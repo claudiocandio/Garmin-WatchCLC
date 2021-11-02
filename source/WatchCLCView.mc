@@ -16,6 +16,23 @@ using Toybox.ActivityMonitor;
 using Toybox.SensorHistory;
 using Toybox.Time.Gregorian;
 
+class DimPrev
+{
+	var str;
+    var w;
+    var h;
+    public function initialize(new_str, new_w, new_h) {
+      str = new_str;
+      w = new_w;
+      h = new_h;
+    }
+    public function set(new_str, new_w, new_h) {
+      str = new_str;
+      w = new_w;
+      h = new_h;
+    }
+}
+
 class WatchCLCView extends WatchUi.WatchFace {
 
 	var screen = null as Text;
@@ -56,10 +73,23 @@ class WatchCLCView extends WatchUi.WatchFace {
 	var SecsAlwaysOnPrev = false;
 	var doNotDisturb = false;
 
-	var x = 0 as Integer;
-	var y = 0 as Integer;
-	var h = 0 as Integer;
-	var w = 0 as Integer;
+	var xs = 0 as Number;
+	var ys = 0 as Number;
+
+	var dim_time = new DimPrev("", 0, 0);
+	var dim_secs = new DimPrev("", 0, 0);
+	var dim_heart = new DimPrev("", 0, 0);
+	var dim_hearthi = new DimPrev("", 0, 0);
+	var dim_batt = new DimPrev("", 0, 0);
+	var dim_batti = new DimPrev("", 0, 0);
+	var dim_ble = new DimPrev("", 0, 0);
+	var dim_steps = new DimPrev("", 0, 0);
+	var dim_stepsi = new DimPrev("", 0, 0);
+	var dim_dist = new DimPrev("", 0, 0);
+	var dim_sleep = new DimPrev("", 0, 0);
+	var dim_not = new DimPrev("", 0, 0);
+	var dim_df1 = new DimPrev("", 0, 0);
+	var dim_df2 = new DimPrev("", 0, 0);
 
 	enum {
 		CALORIES,
@@ -139,12 +169,7 @@ class WatchCLCView extends WatchUi.WatchFace {
         
         garminFont = WatchUi.loadResource(Rez.Fonts.garminFont40px);
         garminFontSmall = WatchUi.loadResource(Rez.Fonts.garminFont30px);
-        
-        view = View.findDrawableById("HeartIcon");
-   	    view.setFont(garminFont);
-       	view.setColor(Graphics.COLOR_RED);
-        view.setText(HEARTICON);
-        
+
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -187,10 +212,11 @@ class WatchCLCView extends WatchUi.WatchFace {
         BackgroundColor = getApp().getProperty("BackgroundColor");
 
 		if(ForegroundColor != ForegroundColorPrev || BackgroundColor != BackgroundColorPrev){
-	        view = View.findDrawableById("StepsIcon");
-   	    	view.setFont(garminFont);
-	       	view.setColor(ForegroundColor);
-       		view.setText(STEPSICON);
+			dc.setColor(ForegroundColor, BackgroundColor);
+			dc.clear();
+
+			dim_hearthi = draw_wrap(dc, HEARTICON, "HeartIcon", garminFont, Graphics.COLOR_RED, Graphics.TEXT_JUSTIFY_CENTER, dim_hearthi);
+			dim_stepsi = draw_wrap(dc, STEPSICON, "StepsIcon", garminFont, ForegroundColor, Graphics.TEXT_JUSTIFY_CENTER, dim_stepsi);
 
 			// to refresh all
 			BLEconnectedPrev = BLEconnectedPrev ? false : true;
@@ -269,37 +295,24 @@ class WatchCLCView extends WatchUi.WatchFace {
 		//heart = "183";
 
         // Show Time
-        view = View.findDrawableById("TimeLabel");
-        view.setFont(ccFontBig);
-        view.setColor(ForegroundColor);
-        view.setText(Lang.format(timeFormat, [hours, clockTime.min.format("%02d")]));
+		dim_time = draw_wrap(dc, Lang.format(timeFormat, [hours, clockTime.min.format("%02d")]), "TimeLabel", ccFontBig, ForegroundColor, Graphics.TEXT_JUSTIFY_CENTER, dim_time);
 		//view.setText("22:33");
 		
         // Show Secs
 		if ( showSecs ) {
-			view = View.findDrawableById("SecsLabel");
-			view.setFont(ccFont);
-			view.setColor(ForegroundColor);
-			view.setText(Lang.format(".$1$", [clockTime.sec.format("%02d")]));
+			dim_secs = draw_wrap(dc, Lang.format(".$1$", [clockTime.sec.format("%02d")]), "SecsLabel", ccFont, ForegroundColor, Graphics.TEXT_JUSTIFY_CENTER, dim_secs);
 			showSecsPrev = true;
 		} else if ( showSecsPrev ) {
-			view = View.findDrawableById("SecsLabel");
-			view.setFont(ccFont);
-			view.setColor(BackgroundColor);
+			dim_secs = draw_wrap(dc, "1", "SecsLabel", ccFont, BackgroundColor, Graphics.TEXT_JUSTIFY_CENTER, dim_secs);
 			showSecsPrev = false;
 		}
 
  		// Show bluetooth icon
 		if ( System.getDeviceSettings().phoneConnected && !BLEconnectedPrev ) {
-	        view = View.findDrawableById("BLEIcon");
-   	    	view.setFont(garminFont);
-       		view.setColor(Graphics.COLOR_BLUE);
-       		view.setText(BLEICON);
+			dim_ble = draw_wrap(dc, BLEICON, "BLEIcon", garminFont, Graphics.COLOR_BLUE, Graphics.TEXT_JUSTIFY_CENTER, dim_ble);
        		BLEconnectedPrev = true;
 		} else if (!System.getDeviceSettings().phoneConnected && BLEconnectedPrev) {
-	        view = View.findDrawableById("BLEIcon");
-   	    	view.setFont(ccFont);
-       		view.setColor(BackgroundColor);
+			dim_ble = draw_wrap(dc, "", "BLEIcon", garminFont, BackgroundColor, Graphics.TEXT_JUSTIFY_CENTER, dim_ble);
        		BLEconnectedPrev = false;
 		}
 
@@ -309,103 +322,69 @@ class WatchCLCView extends WatchUi.WatchFace {
         if (battery != batteryPrev || batteryLow != batteryLowPrev) {
 			var batteryStr = Lang.format("$1$%", [battery.format("%3d")]);
 
-	        view = View.findDrawableById("BatteryLabel");
-    	    view.setFont(ccFontSmall);
     	    if (battery < batteryLow){
-	        	view.setColor(Graphics.COLOR_RED);
-		        view.setText(batteryStr);
 
-		        view = View.findDrawableById("BatteryIcon");
+				dim_batt = draw_wrap(dc, batteryStr, "BatteryLabel", ccFontSmall, Graphics.COLOR_RED, Graphics.TEXT_JUSTIFY_CENTER, dim_batt);
+
 				var shape = System.getDeviceSettings().screenShape;
 				if (shape == System.SCREEN_SHAPE_ROUND){
-	   	    		view.setFont(garminFont);
+					dim_batti = draw_wrap(dc, BATTERYICON, "BatteryIcon", garminFont, Graphics.COLOR_RED, Graphics.TEXT_JUSTIFY_CENTER, dim_batti);
 				} else { // System.SCREEN_SHAPE_SEMI_ROUND & System.SCREEN_SHAPE_RECTANGLE
-	   	    		view.setFont(garminFontSmall);
+					dim_batti = draw_wrap(dc, BATTERYICON, "BatteryIcon", garminFontSmall, Graphics.COLOR_RED, Graphics.TEXT_JUSTIFY_CENTER, dim_batti);
 				}
-       			view.setColor(Graphics.COLOR_RED);
-       			view.setText(BATTERYICON);
     	    } else {
-				view.setColor(ForegroundColor);
-		        view.setText(batteryStr);
+				dim_batti = draw_wrap(dc, BATTERYICON, "BatteryIcon", garminFontSmall, BackgroundColor, Graphics.TEXT_JUSTIFY_CENTER, dim_batti);
+				dim_batt = draw_wrap(dc, batteryStr, "BatteryLabel", ccFontSmall, ForegroundColor, Graphics.TEXT_JUSTIFY_CENTER, dim_batt);
 
-		        view = View.findDrawableById("BatteryIcon");
-   	    		view.setFont(garminFontSmall);
-       			view.setColor(BackgroundColor);
     	    }
-	        //view.setText(Lang.format("$1$%", [battery.format("%3d")]));
 
 			batteryPrev = battery;
 			batteryLowPrev = batteryLow;
         }
 
         if (heart != heartPrev) {
-	        view = View.findDrawableById("HeartLabel");
-    	    view.setFont(ccFont);
-        	view.setColor(ForegroundColor);
-	        view.setText(heart);
-	        heartPrev = heart;
+			dim_heart = draw_wrap(dc, heart, "HeartLabel", ccFont, ForegroundColor, Graphics.TEXT_JUSTIFY_CENTER, dim_heart);
+			heartPrev = heart;
         }
 
         if (steps != stepsPrev) {
-	        view = View.findDrawableById("StepsLabel");
-    	    view.setFont(ccFontSmall);
-        	view.setColor(ForegroundColor);
-	        view.setText(steps);
+			dim_steps = draw_wrap(dc, steps, "StepsLabel", ccFontSmall, ForegroundColor, Graphics.TEXT_JUSTIFY_RIGHT, dim_steps);
 	        stepsPrev = steps;
         }
 
         if (distance != distancePrev) {
-	        view = View.findDrawableById("DistanceLabel");
-    	    view.setFont(ccFontSmall);
-        	view.setColor(ForegroundColor);
-	        view.setText(distance);
+			dim_dist = draw_wrap(dc, distance, "DistanceLabel", ccFontSmall, ForegroundColor, Graphics.TEXT_JUSTIFY_LEFT, dim_dist);
 	        distancePrev = distance;
         }
 
  		// Show do not disturb icon Moon icon
 		if ( doNotDisturb && !doNotDisturbPrev ) {
-	        view = View.findDrawableById("SleepIcon");
-   	    	view.setFont(garminFont);
-       		view.setColor(ForegroundColor);
-       		view.setText(SLEEPICON);
+			dim_sleep = draw_wrap(dc, SLEEPICON, "SleepIcon", garminFont, ForegroundColor, Graphics.TEXT_JUSTIFY_CENTER, dim_sleep);
        		doNotDisturbPrev = true;
 
 		} else if (!doNotDisturb && doNotDisturbPrev) {
-	        view = View.findDrawableById("SleepIcon");
-   	    	view.setFont(ccFont);
-       		view.setColor(BackgroundColor);
+			dim_sleep = draw_wrap(dc, SLEEPICON, "SleepIcon", garminFont, BackgroundColor, Graphics.TEXT_JUSTIFY_CENTER, dim_sleep);
        		doNotDisturbPrev = false;
 		}
 
  		// Show do Notification icon
 		if (getApp().getProperty("UseNotification")) {
 			if ( System.getDeviceSettings().notificationCount > 0 && !notificationPrev ) {
-				view = View.findDrawableById("NotificationIcon");
-				view.setFont(garminFont);
-				view.setColor(Graphics.COLOR_GREEN);
-				view.setText(NOTIFICATIONICON);
+				dim_not = draw_wrap(dc, NOTIFICATIONICON, "NotificationIcon", garminFont, Graphics.COLOR_GREEN, Graphics.TEXT_JUSTIFY_CENTER, dim_not);
 				notificationPrev = true;
-
 			} else if ( System.getDeviceSettings().notificationCount == 0 && notificationPrev ) {
-				view = View.findDrawableById("NotificationIcon");
-				view.setFont(ccFont);
-				view.setColor(BackgroundColor);
+				dim_not = draw_wrap(dc, NOTIFICATIONICON, "NotificationIcon", garminFont, BackgroundColor, Graphics.TEXT_JUSTIFY_CENTER, dim_not);
 				notificationPrev = false;
 			}
 		} else {
 			if (notificationPrev) {
-				view = View.findDrawableById("NotificationIcon");
-				view.setFont(ccFont);
-				view.setColor(BackgroundColor);
+				dim_not = draw_wrap(dc, NOTIFICATIONICON, "NotificationIcon", garminFont, BackgroundColor, Graphics.TEXT_JUSTIFY_CENTER, dim_not);
 				notificationPrev = false;
 			}
 		}
 
-		printDF(1, "DF1", "DF1Icon", "DF1", df1Prev, df1valPrev, info);
-		printDF(2, "DF2", "DF2Icon", "DF2", df2Prev, df2valPrev, info);
-
-        // Call the parent onUpdate function to redraw the layout
-		View.onUpdate(dc);
+		printDF(dc, 1, "DF1", "DF1Icon", "DF1", df1Prev, df1valPrev, info);
+		printDF(dc, 2, "DF2", "DF2Icon", "DF2", df2Prev, df2valPrev, info);
 
     }
 
@@ -431,82 +410,112 @@ class WatchCLCView extends WatchUi.WatchFace {
 	function onPartialUpdate(dc as Dc) as Void {
 
 		if ( showSecs ) {
-
 			if (!SecsClip) {
 				setSecsClip(dc, Graphics.TEXT_JUSTIFY_CENTER);
 			}
-	     	dc.setColor(ForegroundColor,BackgroundColor);
 			dc.clear();
-     		dc.drawText(x, y, ccFont,Lang.format(".$1$", [System.getClockTime().sec.format("%02d")]), Graphics.TEXT_JUSTIFY_CENTER);
-
+     		dc.drawText(xs, ys, ccFont, Lang.format(".$1$", [System.getClockTime().sec.format("%02d")]), Graphics.TEXT_JUSTIFY_CENTER);
 		}
 
  	}
 
-	function setSecsClip(dc as Dc, justify as Integer) as Void {
+	function setSecsClip(dc as Dc, j as Number) as Void {
 		view = View.findDrawableById("SecsLabel");
-		x = view.locX;
-		y = view.locY;
-		h = view.height;
-		w = view.width+1;
-		var x1 = 0;
-		if ( justify == Graphics.TEXT_JUSTIFY_CENTER) {
-			x1 = x - (w/2);
-			x1 = x1 < 0 ? 0 : x1;
-			dc.setClip(x1, y, w, h);
-		} else if (justify == Graphics.TEXT_JUSTIFY_RIGHT) {
-			x1 = x - w;
-			x1 = x1 < 0 ? 0 : x1;
-			dc.setClip(x1, y, w, h);
-		} else { // Graphics.TEXT_JUSTIFY_LEFT
-			dc.setClip(x, y, w, h);
-		}
+		xs = view.locX;
+		ys = view.locY;
+		var dim = dc.getTextDimensions(".00", ccFont);
+
+		do_setClip(dc, xs, ys, dim[0], dim[1], j);
 		dc.setColor(BackgroundColor, BackgroundColor);
 		dc.clear();
+     	dc.setColor(ForegroundColor,BackgroundColor);
 		
 		showSecsPrev = true;
 		SecsClip = true;
 	}
 
-	function printDF(dfnum, DFproperty, DFdrawIcon, DFdrawLabel, dfPrev, dfvalPrev, info) {
+	function draw_wrap(dc as Dc, drawtext as Text, drawId as Text, font as WatchUi.Resource, FgColor as Number, j as Number, dim_prev) {
+	
+		view = View.findDrawableById(drawId);
+		// clear prev text
+		if (dim_prev.w > 0) {
+			do_setClip(dc, view.locX, view.locY, dim_prev.w, dim_prev.h, j);
+			dc.setColor(BackgroundColor, Graphics.COLOR_TRANSPARENT);
+			dc.drawText(view.locX, view.locY, font, dim_prev.str, j);
+			dc.clearClip();
+		}
+
+		return drawcc(dc, view.locX, view.locY, drawtext, drawId, font, FgColor, j, dim_prev);
+	}
+
+	function drawcc(dc as Dc, x as Number, y as Number, drawtext as Text, drawId as Text, font as WatchUi.Resource, FgColor as Number, j as Number, dim_prev) {
+		var dim = dc.getTextDimensions(drawtext, font);
+		var w = dim[0];
+		var h = dim[1];
+
+		do_setClip(dc, x, y, w, h, j);
+		dc.setColor(FgColor, Graphics.COLOR_TRANSPARENT);
+		dc.drawText(x, y, font, drawtext, j);
+		dc.clearClip();
+
+		dim_prev.set(drawtext, w, h);
+		return dim_prev;
+ 	}
+
+	function do_setClip(dc as Dc, x as Number, y as Number, w as Number, h as Number, j as Number) {
+		if (j == Graphics.TEXT_JUSTIFY_CENTER) {
+			var x1 = x - (w/2);
+			x1 = x1 < 0 ? 0 : x1;
+			dc.setClip(x1, y, w, h);
+		} else if (j == Graphics.TEXT_JUSTIFY_RIGHT) {
+			var x1 = x - w;
+			x1 = x1 < 0 ? 0 : x1;
+			dc.setClip(x1, y, w, h);
+		} else { // Graphics.TEXT_JUSTIFY_LEFT
+			dc.setClip(x, y, w, h);
+		}
+	}
+
+	function printDF(dc, dfnum, DFproperty, DFdrawIcon, DFdrawLabel, dfPrev, dfvalPrev, info) {
 
         var df = getApp().getProperty(DFproperty);
 		var dfval = null;
+		var col = 0, icon = "";
+		var font = null;
+
 		//System.println("df: " + df);
 
         if (df != dfPrev) {
-	        view = View.findDrawableById(DFdrawIcon);
-		   	view.setFont(garminFontSmall);
-   			view.setColor(BackgroundColor);
-
 			if (df == CALORIES) {
-    			view.setColor(Graphics.COLOR_RED);
-    			view.setText(CALORIESICON);
+    			col = Graphics.COLOR_RED;
+    			icon = CALORIESICON;
 
 			} else if (df == ALTITUDE) {
-    			view.setColor(ForegroundColor);
-	    		view.setText(ALTITUDEICON);
+    			col = ForegroundColor;
+	    		icon = ALTITUDEICON;
 
 			} else if (df == FLOORSCLIMBED) {
-    			view.setColor(ForegroundColor);
-	    		view.setText(FLOORSCLIMBEDICON);
+    			col = ForegroundColor;
+	    		icon = FLOORSCLIMBEDICON;
 
 			} else if (df == FLOORSDESCENDED) {
-    			view.setColor(ForegroundColor);
-	    		view.setText(FLOORSDESCENDEDICON);
+    			col = ForegroundColor;
+	    		icon = FLOORSDESCENDEDICON;
 
 			} else if (df == ACTIVEMINUTESWEEK || df == ACTIVEMINUTESDAY) {
-    			view.setColor(ForegroundColor);
-	    		view.setText(ACTIVEMINUTESICON);
+    			col = ForegroundColor;
+	    		icon = ACTIVEMINUTESICON;
 
 			} else if (df == ACTIVEMINUTESWEEKGOAL) {
-    			view.setColor(ForegroundColor);
-	    		view.setText(ACTIVEMINUTESWEEKGOALICON);
+    			col = ForegroundColor;
+	    		icon = ACTIVEMINUTESWEEKGOALICON;
 
 			}
 			if (dfnum == 1){
+				dim_df1 = draw_wrap(dc, icon, DFdrawIcon, garminFontSmall, col, Graphics.TEXT_JUSTIFY_CENTER, dim_df1);
 				df1Prev = df;
 			} else if (dfnum == 2){
+				dim_df2 = draw_wrap(dc, icon, DFdrawIcon, garminFontSmall, col, Graphics.TEXT_JUSTIFY_CENTER, dim_df2);
 				df2Prev = df;
 			}
 		}
@@ -571,19 +580,17 @@ class WatchCLCView extends WatchUi.WatchFace {
 		//System.println("dfval: " + dfval);
 
         if (dfval != dfvalPrev) {
-			view = View.findDrawableById(DFdrawLabel);
-
 			if (dfnum == 2 && (screen.equals("260x260") || screen.equals("280x280"))) { // Fenix 6 or 6X
-	    	    view.setFont(ccFont);
+	    	    font = ccFont;
 			} else {
-    	    	view.setFont(ccFontSmall);
+    	    	font = ccFontSmall;
 			}
 
-        	view.setColor(ForegroundColor);
-			view.setText(dfval.toString());
 			if (dfnum == 1){
+				dim_df1 = draw_wrap(dc, dfval.toString(), DFdrawLabel, font, ForegroundColor, Graphics.TEXT_JUSTIFY_CENTER, dim_df1);
 				df1valPrev = dfval;
 			} else if (dfnum == 2){
+				dim_df2 = draw_wrap(dc, dfval.toString(), DFdrawLabel, font, ForegroundColor, Graphics.TEXT_JUSTIFY_CENTER, dim_df2);
 				df1valPrev = dfval;
 			}
         }
