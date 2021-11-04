@@ -15,7 +15,9 @@
     <string id="MilitaryFormatTitle">Military Format for 24 Hour Time</string>
     <string id="NotificationTitle">Enable Notification Icon</string>
     <string id="LowBatteryTitle">Low Battery %</string>
-    <string id="SecsAlwaysOnTitle">Seconds Always On (more battery usage)</string>
+    <string id="SecsTitle">Seconds</string>
+    <string id="SecsDisabled">Disabled</string>
+    <string id="SecsOnGesture">On Gesture</string>
 
     <string id="DF1Title">Data Field 1</string>
     <string id="DF2Title">Data Field 2</string>

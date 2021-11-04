@@ -60,4 +60,12 @@
         </settingConfig>
     </setting>
 
+    <setting propertyKey="@Properties.Secs" title="@Strings.SecsTitle">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.SecsDisabled</listEntry>
+            <listEntry value="1">@Strings.SecsOnGesture</listEntry>
+        </settingConfig>
+    </setting>
+
+
 </settings>
