@@ -19,21 +19,23 @@ using Toybox.Time.Gregorian;
 class DF
 {
 	var ValPrev;
+	var DrawableById;
     var X;
     var Y;
     var W;
     var H;
-    public function initialize(valPrev, x, y, w, h) {
-      ValPrev = valPrev;
-      X = x;
-      Y = y;
-      W = w;
-      H = h;
+	var J;
+
+    public function initialize(valPrev, drawableById, j, w, h) {
+		ValPrev = valPrev;
+		DrawableById = drawableById;
+		J = j;
+		W = w;
+		H = h;
     }
-    public function set(valPrev, x, y, w, h) {
+
+    public function save(valPrev, w, h) {
       ValPrev = valPrev;
-      X = x;
-      Y = y;
       W = w;
       H = h;
     }
@@ -65,24 +67,25 @@ class WatchCLCView extends WatchUi.WatchFace {
 
 	var SecsClip = false;
 	var SecsAlwaysOnPrev = false;
-	
-	var df_time = new DF(null, 0, 0, 0, 0);
-	var df_secs = new DF(null, 0, 0, 0, 0);
-	var df_heart = new DF(null, 0, 0, 0, 0);
-	var df_hearti = new DF(null, 0, 0, 0, 0);
-	var df_batt = new DF(null, 0, 0, 0, 0);
-	var df_batti = new DF(null, 0, 0, 0, 0);
-	var df_ble = new DF(true, 0, 0, 0, 0);
-	var df_steps = new DF(null, 0, 0, 0, 0);
-	var df_stepsi = new DF(null, 0, 0, 0, 0);
-	var df_dist = new DF(null, 0, 0, 0, 0);
+
 	var doSleep = false;
-	var df_sleep = new DF(true, 0, 0, 0, 0); // do not disturb
-	var df_not = new DF(true, 0, 0, 0, 0);
-	var df_df1 = new DF(null, 0, 0, 0, 0);
-	var df_df1i = new DF(null, 0, 0, 0, 0);
-	var df_df2 = new DF(null, 0, 0, 0, 0);
-	var df_df2i = new DF(null, 0, 0, 0, 0);
+	
+	var df_batt = new DF(null, "BatteryLabel", Graphics.TEXT_JUSTIFY_CENTER, 0, 0);
+	var df_batti = new DF(null, "BatteryIcon", Graphics.TEXT_JUSTIFY_CENTER, 0, 0);
+	var df_ble = new DF(true, "BLEIcon", Graphics.TEXT_JUSTIFY_CENTER, 0, 0);
+	var df_steps = new DF(null, "StepsLabel", Graphics.TEXT_JUSTIFY_RIGHT, 0, 0);
+	var df_stepsi = new DF(null, "StepsIcon", Graphics.TEXT_JUSTIFY_CENTER, 0, 0);
+	var df_dist = new DF(null, "DistanceLabel", Graphics.TEXT_JUSTIFY_LEFT, 0, 0);
+	var df_time = new DF(null, "TimeLabel", Graphics.TEXT_JUSTIFY_CENTER, 0, 0);
+	var df_hearti = new DF(null, "HeartIcon", Graphics.TEXT_JUSTIFY_CENTER, 0, 0);
+	var df_heart = new DF(null, "HeartLabel", Graphics.TEXT_JUSTIFY_CENTER, 0, 0);
+	var df_sleep = new DF(true, "SleepIcon", Graphics.TEXT_JUSTIFY_CENTER, 0, 0);
+	var df_secs = new DF(null, "SecsLabel", Graphics.TEXT_JUSTIFY_CENTER, 0, 0);
+	var df_not = new DF(true, "NotificationIcon", Graphics.TEXT_JUSTIFY_CENTER, 0, 0);
+	var df_df1i = new DF(null, "DF1Icon", Graphics.TEXT_JUSTIFY_CENTER, 0, 0);
+	var df_df1 = new DF(null, "DF1", Graphics.TEXT_JUSTIFY_CENTER, 0, 0);
+	var df_df2i = new DF(null, "DF2Icon", Graphics.TEXT_JUSTIFY_CENTER, 0, 0);
+	var df_df2 = new DF(null, "DF2", Graphics.TEXT_JUSTIFY_CENTER, 0, 0);
 
 	enum {
 		CALORIES,
@@ -116,6 +119,7 @@ class WatchCLCView extends WatchUi.WatchFace {
         WatchFace.initialize();
 		// see if 1hz is possible
 		cando1hz = ( Toybox.WatchUi.WatchFace has :onPartialUpdate );
+
     }
 
     // Load your resources here
@@ -163,76 +167,77 @@ class WatchCLCView extends WatchUi.WatchFace {
         garminFont = WatchUi.loadResource(Rez.Fonts.garminFont40px);
         garminFontSmall = WatchUi.loadResource(Rez.Fonts.garminFont30px);
 
-		view = View.findDrawableById("BatteryLabel");
+		view = View.findDrawableById(df_batt.DrawableById);
 		df_batt.X = view.locX;
 		df_batt.Y = view.locY;
 
-		view = View.findDrawableById("BatteryIcon");
+		view = View.findDrawableById(df_batti.DrawableById);
 		df_batti.X = view.locX;
 		df_batti.Y = view.locY;
 
-		view = View.findDrawableById("BLEIcon");
+		view = View.findDrawableById(df_ble.DrawableById);
 		df_ble.X = view.locX;
 		df_ble.Y = view.locY;
 
-		view = View.findDrawableById("StepsLabel");
+		view = View.findDrawableById(df_steps.DrawableById);
 		df_steps.X = view.locX;
 		df_steps.Y = view.locY;
 
-		view = View.findDrawableById("StepsIcon");
+		view = View.findDrawableById(df_stepsi.DrawableById);
 		df_stepsi.X = view.locX;
 		df_stepsi.Y = view.locY;
 
-		view = View.findDrawableById("DistanceLabel");
+		view = View.findDrawableById(df_dist.DrawableById);
 		df_dist.X = view.locX;
 		df_dist.Y = view.locY;
 
-		view = View.findDrawableById("TimeLabel");
+		view = View.findDrawableById(df_time.DrawableById);
 		df_time.X = view.locX;
 		df_time.Y = view.locY;
 
-		view = View.findDrawableById("HeartIcon");
+		view = View.findDrawableById(df_hearti.DrawableById);
 		df_hearti.X = view.locX;
 		df_hearti.Y = view.locY;
 
-		view = View.findDrawableById("HeartLabel");
+		view = View.findDrawableById(df_heart.DrawableById);
 		df_heart.X = view.locX;
 		df_heart.Y = view.locY;
 
-		view = View.findDrawableById("SleepIcon");
+		view = View.findDrawableById(df_sleep.DrawableById);
 		df_sleep.X = view.locX;
 		df_sleep.Y = view.locY;
 
-		view = View.findDrawableById("SecsLabel");
+		view = View.findDrawableById(df_secs.DrawableById);
 		df_secs.X = view.locX;
 		df_secs.Y = view.locY;
 
-		view = View.findDrawableById("NotificationIcon");
+		view = View.findDrawableById(df_not.DrawableById);
 		df_not.X = view.locX;
 		df_not.Y = view.locY;
 
-		view = View.findDrawableById("DF1Icon");
+		view = View.findDrawableById(df_df1i.DrawableById);
 		df_df1i.X = view.locX;
 		df_df1i.Y = view.locY;
 
-		view = View.findDrawableById("DF1");
+		view = View.findDrawableById(df_df1.DrawableById);
 		df_df1.X = view.locX;
 		df_df1.Y = view.locY;
 
-		view = View.findDrawableById("DF2Icon");
+		view = View.findDrawableById(df_df2i.DrawableById);
 		df_df2i.X = view.locX;
 		df_df2i.Y = view.locY;
 
-		view = View.findDrawableById("DF2");
+		view = View.findDrawableById(df_df2.DrawableById);
 		df_df2.X = view.locX;
 		df_df2.Y = view.locY;
-
     }
 
     // Called when this View is brought to the foreground. Restore
     // the state of this View and prepare it to be shown. This includes
     // loading resources into memory.
     function onShow() as Void {
+		// to refresh with onUpdate
+		ForegroundColorPrev = null;
     }
 
     // Update the view
@@ -273,8 +278,8 @@ class WatchCLCView extends WatchUi.WatchFace {
 			dc.setColor(ForegroundColor, BackgroundColor);
 			dc.clear();
 
-			df_hearti = draw_wrap(dc, HEARTICON, "HeartIcon", garminFont, Graphics.COLOR_RED, Graphics.TEXT_JUSTIFY_CENTER, df_hearti);
-			df_stepsi = draw_wrap(dc, STEPSICON, "StepsIcon", garminFont, ForegroundColor, Graphics.TEXT_JUSTIFY_CENTER, df_stepsi);
+			df_hearti = drawcc(dc, HEARTICON, garminFont, Graphics.COLOR_RED, df_hearti);
+			df_stepsi = drawcc(dc, STEPSICON, garminFont, ForegroundColor, df_stepsi);
 
 			// to refresh all
 			df_ble.ValPrev = df_ble.ValPrev ? false : true;
@@ -353,24 +358,24 @@ class WatchCLCView extends WatchUi.WatchFace {
 		//test heart = "183";
 
         // Show Time
-		df_time = draw_wrap(dc, Lang.format(timeFormat, [hours, clockTime.min.format("%02d")]), "TimeLabel", ccFontBig, ForegroundColor, Graphics.TEXT_JUSTIFY_CENTER, df_time);
+		df_time = drawcc(dc, Lang.format(timeFormat, [hours, clockTime.min.format("%02d")]), ccFontBig, ForegroundColor, df_time);
 		// test "22:33"
 		
         // Show Secs
 		if ( showSecs ) {
-			df_secs = draw_wrap(dc, Lang.format(".$1$", [clockTime.sec.format("%02d")]), "SecsLabel", ccFont, ForegroundColor, Graphics.TEXT_JUSTIFY_CENTER, df_secs);
+			df_secs = drawcc(dc, Lang.format(".$1$", [clockTime.sec.format("%02d")]), ccFont, ForegroundColor, df_secs);
 			showSecsPrev = true;
 		} else if ( showSecsPrev ) {
-			df_secs = draw_wrap(dc, df_secs.ValPrev, "SecsLabel", ccFont, BackgroundColor, Graphics.TEXT_JUSTIFY_CENTER, df_secs);
+			df_secs = drawcc(dc, df_secs.ValPrev, ccFont, BackgroundColor, df_secs);
 			showSecsPrev = false;
 		}
 
  		// Show bluetooth icon if phone is connected
 		if ( System.getDeviceSettings().phoneConnected && !df_ble.ValPrev ) {
-			df_ble = draw_wrap(dc, BLEICON, "BLEIcon", garminFont, Graphics.COLOR_BLUE, Graphics.TEXT_JUSTIFY_CENTER, df_ble);
+			df_ble = drawcc(dc, BLEICON, garminFont, Graphics.COLOR_BLUE, df_ble);
        		df_ble.ValPrev = true;
 		} else if (!System.getDeviceSettings().phoneConnected && df_ble.ValPrev) {
-			df_ble = draw_wrap(dc, "", "BLEIcon", garminFont, BackgroundColor, Graphics.TEXT_JUSTIFY_CENTER, df_ble);
+			df_ble = drawcc(dc, "", garminFont, BackgroundColor, df_ble);
        		df_ble.ValPrev = false;
 		}
 
@@ -383,19 +388,19 @@ class WatchCLCView extends WatchUi.WatchFace {
 
     	    if (battery < batteryLow){
 				if (shape == System.SCREEN_SHAPE_ROUND){
-					df_batti = draw_wrap(dc, BATTERYICON, "BatteryIcon", garminFont, Graphics.COLOR_RED, Graphics.TEXT_JUSTIFY_CENTER, df_batti);
+					df_batti = drawcc(dc, BATTERYICON, garminFont, Graphics.COLOR_RED, df_batti);
 				} else { // System.SCREEN_SHAPE_SEMI_ROUND & System.SCREEN_SHAPE_RECTANGLE
-					df_batti = draw_wrap(dc, BATTERYICON, "BatteryIcon", garminFontSmall, Graphics.COLOR_RED, Graphics.TEXT_JUSTIFY_CENTER, df_batti);
+					df_batti = drawcc(dc, BATTERYICON, garminFontSmall, Graphics.COLOR_RED, df_batti);
 				}
-				df_batt = draw_wrap(dc, batteryStr, "BatteryLabel", ccFontSmall, Graphics.COLOR_RED, Graphics.TEXT_JUSTIFY_CENTER, df_batt);
+				df_batt = drawcc(dc, batteryStr, ccFontSmall, Graphics.COLOR_RED, df_batt);
 
     	    } else {
 				if (shape == System.SCREEN_SHAPE_ROUND){
-					df_batti = draw_wrap(dc, BATTERYICON, "BatteryIcon", garminFont, BackgroundColor, Graphics.TEXT_JUSTIFY_CENTER, df_batti);
+					df_batti = drawcc(dc, BATTERYICON, garminFont, BackgroundColor, df_batti);
 				} else { // System.SCREEN_SHAPE_SEMI_ROUND & System.SCREEN_SHAPE_RECTANGLE
-					df_batti = draw_wrap(dc, BATTERYICON, "BatteryIcon", garminFontSmall, BackgroundColor, Graphics.TEXT_JUSTIFY_CENTER, df_batti);
+					df_batti = drawcc(dc, BATTERYICON, garminFontSmall, BackgroundColor, df_batti);
 				}
-				df_batt = draw_wrap(dc, batteryStr, "BatteryLabel", ccFontSmall, ForegroundColor, Graphics.TEXT_JUSTIFY_CENTER, df_batt);
+				df_batt = drawcc(dc, batteryStr, ccFontSmall, ForegroundColor, df_batt);
     	    }
 
 			df_batt.ValPrev = batteryStr;
@@ -403,42 +408,42 @@ class WatchCLCView extends WatchUi.WatchFace {
         }
 
         if (heart != df_heart.ValPrev) {
-			df_heart = draw_wrap(dc, heart, "HeartLabel", ccFont, ForegroundColor, Graphics.TEXT_JUSTIFY_CENTER, df_heart);
+			df_heart = drawcc(dc, heart, ccFont, ForegroundColor, df_heart);
 			df_heart.ValPrev = heart;
         }
 
         if (steps != df_steps.ValPrev) {
-			df_steps = draw_wrap(dc, steps, "StepsLabel", ccFontSmall, ForegroundColor, Graphics.TEXT_JUSTIFY_RIGHT, df_steps);
+			df_steps = drawcc(dc, steps, ccFontSmall, ForegroundColor, df_steps);
 	        df_steps.ValPrev = steps;
         }
 
         if (distance != df_dist.ValPrev) {
-			df_dist = draw_wrap(dc, distance, "DistanceLabel", ccFontSmall, ForegroundColor, Graphics.TEXT_JUSTIFY_LEFT, df_dist);
+			df_dist = drawcc(dc, distance, ccFontSmall, ForegroundColor, df_dist);
 	        df_dist.ValPrev = distance;
         }
 
  		// Show do not disturb icon Moon icon
 		if (doSleep && !df_sleep.ValPrev) {
-			df_sleep = draw_wrap(dc, SLEEPICON, "SleepIcon", garminFont, ForegroundColor, Graphics.TEXT_JUSTIFY_CENTER, df_sleep);
+			df_sleep = drawcc(dc, SLEEPICON, garminFont, ForegroundColor, df_sleep);
        		df_sleep.ValPrev = true;
 
 		} else if (!doSleep && df_sleep.ValPrev) {
-			df_sleep = draw_wrap(dc, SLEEPICON, "SleepIcon", garminFont, BackgroundColor, Graphics.TEXT_JUSTIFY_CENTER, df_sleep);
+			df_sleep = drawcc(dc, SLEEPICON, garminFont, BackgroundColor, df_sleep);
        		df_sleep.ValPrev = false;
 		}
 
  		// Show do Notification icon
 		if (getApp().getProperty("UseNotification")) {
 			if ( System.getDeviceSettings().notificationCount > 0 && !df_not.ValPrev ) {
-				df_not = draw_wrap(dc, NOTIFICATIONICON, "NotificationIcon", garminFont, Graphics.COLOR_GREEN, Graphics.TEXT_JUSTIFY_CENTER, df_not);
+				df_not = drawcc(dc, NOTIFICATIONICON, garminFont, Graphics.COLOR_GREEN, df_not);
 				df_not.ValPrev = true;
 			} else if ( System.getDeviceSettings().notificationCount == 0 && df_not.ValPrev ) {
-				df_not = draw_wrap(dc, NOTIFICATIONICON, "NotificationIcon", garminFont, BackgroundColor, Graphics.TEXT_JUSTIFY_CENTER, df_not);
+				df_not = drawcc(dc, NOTIFICATIONICON, garminFont, BackgroundColor, df_not);
 				df_not.ValPrev = false;
 			}
 		} else {
 			if (df_not.ValPrev) {
-				df_not = draw_wrap(dc, NOTIFICATIONICON, "NotificationIcon", garminFont, BackgroundColor, Graphics.TEXT_JUSTIFY_CENTER, df_not);
+				df_not = drawcc(dc, NOTIFICATIONICON, garminFont, BackgroundColor, df_not);
 				df_not.ValPrev = false;
 			}
 		}
@@ -470,19 +475,19 @@ class WatchCLCView extends WatchUi.WatchFace {
 
 		if ( showSecs ) {
 			if (!SecsClip) {
-				setSecsClip(dc, Graphics.TEXT_JUSTIFY_CENTER);
+				setSecsClip(dc);
 			}
 	     	dc.setColor(ForegroundColor,BackgroundColor);
 			dc.clear();
-     		dc.drawText(df_secs.X, df_secs.Y, ccFont, Lang.format(".$1$", [System.getClockTime().sec.format("%02d")]), Graphics.TEXT_JUSTIFY_CENTER);
+     		dc.drawText(df_secs.X, df_secs.Y, ccFont, Lang.format(".$1$", [System.getClockTime().sec.format("%02d")]), df_secs.J);
 		}
 
  	}
 
-	function setSecsClip(dc as Dc, j as Number) as Void {
+	function setSecsClip(dc as Dc) as Void {
 		var dim = dc.getTextDimensions(".00", ccFont);
 
-		do_setClip(dc, df_secs.X, df_secs.Y, dim[0], dim[1], j);
+		do_setClip(dc, df_secs.X, df_secs.Y, dim[0], dim[1], df_secs.J);
 		dc.setColor(BackgroundColor, BackgroundColor);
 		dc.clear();
 		
@@ -490,30 +495,26 @@ class WatchCLCView extends WatchUi.WatchFace {
 		SecsClip = true;
 	}
 
-	function draw_wrap(dc as Dc, drawtext as Text, drawId as Text, font as WatchUi.Resource, FgColor as Number, j as Number, df) {
-	
-		// clear prev text
+	function drawcc(dc as Dc, drawtext as Text, font as WatchUi.Resource, FgColor as Number, df as DF) {
+
+		// clear prev text if any
 		if (df.W > 0) {
-			do_setClip(dc, df.X, df.Y, df.W, df.H, j);
+			do_setClip(dc, df.X, df.Y, df.W, df.H, df.J);
 			dc.setColor(BackgroundColor, Graphics.COLOR_TRANSPARENT);
-			dc.drawText(df.X, df.Y, font, df.ValPrev, j);
+			dc.drawText(df.X, df.Y, font, df.ValPrev, df.J);
 			dc.clearClip();
 		}
 
-		return drawcc(dc, df.X, df.Y, drawtext, drawId, font, FgColor, j, df);
-	}
-
-	function drawcc(dc as Dc, x as Number, y as Number, drawtext as Text, drawId as Text, font as WatchUi.Resource, FgColor as Number, j as Number, df) {
 		var dim = dc.getTextDimensions(drawtext, font);
 		var w = dim[0];
 		var h = dim[1];
 
-		do_setClip(dc, x, y, w, h, j);
+		do_setClip(dc, df.X, df.Y, w, h, df.J);
 		dc.setColor(FgColor, Graphics.COLOR_TRANSPARENT);
-		dc.drawText(x, y, font, drawtext, j);
+		dc.drawText(df.X, df.Y, font, drawtext, df.J);
 		dc.clearClip();
 
-		df.set(drawtext, x, y, w, h);
+		df.save(drawtext, w, h);
 		return df;
  	}
 
@@ -604,7 +605,7 @@ class WatchCLCView extends WatchUi.WatchFace {
 			} else {
     	    	font = ccFontSmall;
 			}
-			df = draw_wrap(dc, dfval.toString(), df12, font, ForegroundColor, Graphics.TEXT_JUSTIFY_CENTER, df);
+			df = drawcc(dc, dfval, font, ForegroundColor, df);
 			df.ValPrev = dfval;
         }
 
@@ -635,7 +636,7 @@ class WatchCLCView extends WatchUi.WatchFace {
 		}
 
         if (dfval != dfi.ValPrev) {
-			dfi = draw_wrap(dc, dfval, df12, garminFontSmall, color, Graphics.TEXT_JUSTIFY_CENTER, dfi);
+			dfi = drawcc(dc, dfval, garminFontSmall, color, dfi);
 			dfi.ValPrev = dfval;
 		}
 
