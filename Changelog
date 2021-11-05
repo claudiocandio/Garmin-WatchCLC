@@ -1,8 +1,10 @@
 CHANGELOG
 
 1.0.3
-- Add setting "Seconds Always On", more battery usage while enabled.
+- Add View Seconds settings: Disabled, On Gesture (default), Always On.
   This does not work for "Fenix Chronos" and "Forerunner 735xt" as they do not support 1 second updates.
+- Many code changes to allow 1s updates and save battery.
+- Always On settings will consume some additional battery.
 
 1.0.2
 - Add notification icon, it can be enabled/disabled using the watch face settings

@@ -22,22 +22,22 @@ class DF
 	var DrawableById;
     var X;
     var Y;
-    var W;
-    var H;
+    var WPrev;
+    var HPrev;
 	var J;
 
     public function initialize(valPrev, drawableById, j, w, h) {
 		ValPrev = valPrev;
 		DrawableById = drawableById;
 		J = j;
-		W = w;
-		H = h;
+		WPrev = w;
+		HPrev = h;
     }
 
     public function save(valPrev, w, h) {
       ValPrev = valPrev;
-      W = w;
-      H = h;
+      WPrev = w;
+      HPrev = h;
     }
 }
 
@@ -237,14 +237,6 @@ class WatchCLCView extends WatchUi.WatchFace {
 		df_df2.Y = view.locY;
     }
 
-    // Called when this View is brought to the foreground. Restore
-    // the state of this View and prepare it to be shown. This includes
-    // loading resources into memory.
-    function onShow() as Void {
-		// to refresh with onUpdate
-		ForegroundColorPrev = null;
-    }
-
     // Update the view
     function onUpdate(dc as Dc) as Void {
 
@@ -259,11 +251,18 @@ class WatchCLCView extends WatchUi.WatchFace {
 		}
 
 		if (doSleep || Secs == SECSDISABLED){
+			if (Secs == SECSALWAYSON || Secs == SECSONGESTURE){
+				Secs = SECSDISABLED;
+			}
 			showSecs = false;
-		} else if (Secs == SECSALWAYSON && !cando1hz){
-			//should not do this unless I forget the correct settings.xml for the device
-			Secs = SECSONGESTURE;
-			showSecs = false;
+		} else if (Secs == SECSALWAYSON){
+			 if (!cando1hz){
+				//should not do this unless I forget the correct settings.xml for the device
+				Secs = SECSONGESTURE;
+				showSecs = false;
+			 } else {
+				showSecs = true;
+			 }
 		}
 
         ForegroundColor = getApp().getProperty("ForegroundColor");
@@ -454,13 +453,20 @@ class WatchCLCView extends WatchUi.WatchFace {
     function onHide() as Void {
     }
 
+    // Called when this View is brought to the foreground. Restore
+    // the state of this View and prepare it to be shown. This includes
+    // loading resources into memory.
+    function onShow() as Void {
+		// to refresh with onUpdate
+		ForegroundColorPrev = null;
+    }
+
     // The user has just looked at their watch. Timers and animations may be started here.
     function onExitSleep() as Void {
 		
 		if ( Secs == SECSALWAYSON || Secs == SECSONGESTURE) {
 			showSecs = true;
 		}
-
 		WatchUi.requestUpdate();    
     }
 
@@ -501,8 +507,8 @@ class WatchCLCView extends WatchUi.WatchFace {
 	function drawcc(dc as Dc, drawtext as Text, font as WatchUi.Resource, FgColor as Number, df as DF) {
 
 		// clear prev text if any
-		if (df.W > 0) {
-			do_setClip(dc, df.X, df.Y, df.W, df.H, df.J);
+		if (df.WPrev > 0) {
+			do_setClip(dc, df.X, df.Y, df.WPrev, df.HPrev, df.J);
 			dc.setColor(BackgroundColor, Graphics.COLOR_TRANSPARENT);
 			dc.drawText(df.X, df.Y, font, df.ValPrev, df.J);
 			dc.clearClip();
