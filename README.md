@@ -17,9 +17,9 @@ I also added more compatible watches but just tested them using the simulator, I
 &emsp;- Background Color  
 &emsp;- Foreground Color  
 &emsp;- Low Battery %  
-&emsp;- Enable/Disable: Military Format Time  
-&emsp;- Enable/Disable: Notification Icon  
-&emsp;- Disabled/On Gesture/Always On: Seconds
+&emsp;- Military Format Time (Enable/Disable)  
+&emsp;- Notification Icon (Enable/Disable)  
+&emsp;- Seconds (Always On/On Gesture/Disable)  
 &emsp;- Data Field 1 & 2  
 &emsp;&emsp;Calories  
 &emsp;&emsp;Date  
@@ -34,8 +34,7 @@ I also added more compatible watches but just tested them using the simulator, I
 
 #### Notes
 
-"Fenix Chronos" and "Forerunner 735xt" do not support 1 second updates.  
-Always On settings will consume some additional battery.
+Always On settings won't work for "Fenix Chronos" and "Forerunner 735xt" as they do not support 1 second updates.  
 
 ### Import this project with Eclipse IDE for Java
 

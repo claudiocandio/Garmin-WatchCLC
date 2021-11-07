@@ -61,6 +61,7 @@ class WatchCLCView extends WatchUi.WatchFace {
 	var batteryLow = null as Number;
 
 	var Secs = 0;
+	var SecsPrev = 0;
 	var showSecs = false;
 	var showSecsPrev = false;
 	var SecsClip = false;
@@ -248,6 +249,9 @@ class WatchCLCView extends WatchUi.WatchFace {
 			dc.clear();
 			dc.clearClip();
 			SecsClip = false;
+
+			showSecs = false;
+			SecsPrev = Secs;
 		}
 
 		if (doSleep || Secs == SECSDISABLED){
@@ -489,6 +493,16 @@ class WatchCLCView extends WatchUi.WatchFace {
 	     	dc.setColor(ForegroundColor,BackgroundColor);
 			dc.clear();
      		dc.drawText(df_secs.X, df_secs.Y, ccFont, Lang.format(".$1$", [System.getClockTime().sec.format("%02d")]), df_secs.J);
+		
+		} else if(SecsPrev == SECSALWAYSON){
+			dc.setColor(BackgroundColor, BackgroundColor);
+			dc.clear();
+			dc.clearClip();
+			SecsClip = false;
+
+			showSecsPrev = false;
+			showSecs = false;
+			SecsPrev = Secs;
 		}
 
  	}
@@ -501,6 +515,7 @@ class WatchCLCView extends WatchUi.WatchFace {
 		dc.clear();
 		
 		showSecsPrev = true;
+		SecsPrev = Secs;
 		SecsClip = true;
 	}
 
