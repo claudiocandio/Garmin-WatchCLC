@@ -1,9 +1,9 @@
 CHANGELOG
 
 1.0.3
-- Add View Seconds settings: Disabled, On Gesture (default), Always On.
+- Add Seconds settings: Disabled, On Gesture (default), Always On.
   This does not work for "Fenix Chronos" and "Forerunner 735xt" as they do not support 1 second updates.
-- Many code changes to allow 1s updates and save battery.
+- Many code changes to allow 1s updates and to hopefully save battery.
 - Always On settings will consume some additional battery.
 
 1.0.2
