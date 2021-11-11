@@ -44,7 +44,6 @@ class DF
 class WatchCLCView extends WatchUi.WatchFace {
 
 	var screen = null as Text;
-    var view = null as Text;
 	var ccFontBig = null;
 	var ccFont = null;
 	var ccFontSmall = null;
@@ -125,7 +124,6 @@ class WatchCLCView extends WatchUi.WatchFace {
         WatchFace.initialize();
 		// see if 1hz is possible
 		cando1hz = ( Toybox.WatchUi.WatchFace has :onPartialUpdate );
-
     }
 
     // Load your resources here
@@ -173,7 +171,7 @@ class WatchCLCView extends WatchUi.WatchFace {
         garminFont = WatchUi.loadResource(Rez.Fonts.garminFont40px);
         garminFontSmall = WatchUi.loadResource(Rez.Fonts.garminFont30px);
 
-		view = View.findDrawableById(df_batt.DrawableById);
+		var view = View.findDrawableById(df_batt.DrawableById);
 		df_batt.X = view.locX;
 		df_batt.Y = view.locY;
 
@@ -244,36 +242,36 @@ class WatchCLCView extends WatchUi.WatchFace {
 		doSleep = System.getDeviceSettings().doNotDisturb;
 		Secs = getApp().getProperty("Secs");
 
-		if(SecsClip){
+		if (SecsClip) {
 			dc.setColor(BackgroundColor, BackgroundColor);
 			dc.clear();
 			dc.clearClip();
-			SecsClip = false;
-
 			showSecs = false;
+			showSecsPrev = false;
 			SecsPrev = Secs;
+			SecsClip = false;
 		}
 
-		if (doSleep || Secs == SECSDISABLED){
-			if (Secs == SECSALWAYSON || Secs == SECSONGESTURE){
-				Secs = SECSDISABLED;
-			}
+		if (doSleep) {
+			Secs = SECSDISABLED;
 			showSecs = false;
-		} else if (Secs == SECSALWAYSON){
-			 if (!cando1hz){
-				//should not do this unless I forget the correct settings.xml for the device
-				Secs = SECSONGESTURE;
-				showSecs = false;
-			 } else {
+		} else if (Secs == SECSALWAYSON) {
+			if (cando1hz) {
 				showSecs = true;
+			} else {
+				//should not do this unless I forget the correct settings.xml for the device
+				getApp().setProperty("Secs", SECSONGESTURE);
+				Secs = SECSONGESTURE;
 			 }
 		}
 
         ForegroundColor = getApp().getProperty("ForegroundColor");
         BackgroundColor = getApp().getProperty("BackgroundColor");
 
-		if(ForegroundColor != ForegroundColorPrev || BackgroundColor != BackgroundColorPrev){
-			// to refresh all
+		if(
+			ForegroundColor != ForegroundColorPrev || 
+			BackgroundColor != BackgroundColorPrev
+		   ){
 
 			dc.setColor(ForegroundColor, BackgroundColor);
 			dc.clear();
@@ -425,7 +423,7 @@ class WatchCLCView extends WatchUi.WatchFace {
 		if (doSleep && !df_sleep.ValPrev) {
 			drawcc(dc, SLEEPICON, garminFont, ForegroundColor, df_sleep);
        		df_sleep.ValPrev = true;
-
+		
 		} else if (!doSleep && df_sleep.ValPrev) {
 			drawcc(dc, SLEEPICON, garminFont, BackgroundColor, df_sleep);
        		df_sleep.ValPrev = false;
@@ -461,24 +459,19 @@ class WatchCLCView extends WatchUi.WatchFace {
     // the state of this View and prepare it to be shown. This includes
     // loading resources into memory.
     function onShow() as Void {
-		// to refresh with onUpdate
+		// to refresh with next onUpdate
 		ForegroundColorPrev = null;
     }
 
     // The user has just looked at their watch. Timers and animations may be started here.
     function onExitSleep() as Void {
-		
-		if ( Secs == SECSALWAYSON || Secs == SECSONGESTURE) {
-			showSecs = true;
-		}
-		WatchUi.requestUpdate();    
+		showSecs = true;
+		WatchUi.requestUpdate();
     }
 
     // Terminate any active timers and prepare for slow updates.
     function onEnterSleep() as Void {
-		if ( Secs == SECSONGESTURE) {
-			showSecs = false;
-		}
+		showSecs = false;
 		WatchUi.requestUpdate();    
     }
 
@@ -488,20 +481,21 @@ class WatchCLCView extends WatchUi.WatchFace {
 		if ( Secs == SECSALWAYSON ) {
 			//drawcc(dc, Lang.format(".$1$", [System.getClockTime().sec.format("%02d")]), ccFont, ForegroundColor, df_secs);
 			if (!SecsClip) {
-				setSecsClip(dc);
+					setSecsClip(dc);
 			}
-	     	dc.setColor(ForegroundColor,BackgroundColor);
+			dc.setColor(ForegroundColor,BackgroundColor);
 			dc.clear();
-     		dc.drawText(df_secs.X, df_secs.Y, ccFont, Lang.format(".$1$", [System.getClockTime().sec.format("%02d")]), df_secs.J);
-		
-		} else if(SecsPrev == SECSALWAYSON){
-			dc.setColor(BackgroundColor, BackgroundColor);
-			dc.clear();
-			dc.clearClip();
-			SecsClip = false;
+			dc.drawText(df_secs.X, df_secs.Y, ccFont, Lang.format(".$1$", [System.getClockTime().sec.format("%02d")]), df_secs.J);
 
-			showSecsPrev = false;
+		} else if(SecsPrev == SECSALWAYSON){
+			if (SecsClip) {
+				dc.setColor(BackgroundColor, BackgroundColor);
+				dc.clear();
+				dc.clearClip();
+				SecsClip = false;
+			}
 			showSecs = false;
+			showSecsPrev = false;
 			SecsPrev = Secs;
 		}
 
@@ -513,7 +507,6 @@ class WatchCLCView extends WatchUi.WatchFace {
 		do_setClip(dc, df_secs.X, df_secs.Y, dim[0], dim[1], df_secs.J);
 		dc.setColor(BackgroundColor, BackgroundColor);
 		dc.clear();
-		
 		showSecsPrev = true;
 		SecsPrev = Secs;
 		SecsClip = true;

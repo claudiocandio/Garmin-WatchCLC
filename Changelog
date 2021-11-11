@@ -1,5 +1,8 @@
 CHANGELOG
 
+1.0.4
+- Fix do not disturb/sleep black screen
+
 1.0.3
 - Add Seconds settings: Always On, On Gesture (default), Disabled.
   Always On won't work for "Fenix Chronos" and "Forerunner 735xt" as they do not support 1 second updates.
