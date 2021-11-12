@@ -44,6 +44,7 @@ class DF
 class WatchCLCView extends WatchUi.WatchFace {
 
 	var screen = null as Text;
+	var refreshScreen = true;
 	var ccFontBig = null;
 	var ccFont = null;
 	var ccFontSmall = null;
@@ -269,6 +270,7 @@ class WatchCLCView extends WatchUi.WatchFace {
         BackgroundColor = getApp().getProperty("BackgroundColor");
 
 		if(
+			refreshScreen ||
 			ForegroundColor != ForegroundColorPrev || 
 			BackgroundColor != BackgroundColorPrev
 		   ){
@@ -296,6 +298,8 @@ class WatchCLCView extends WatchUi.WatchFace {
 
 			ForegroundColorPrev = ForegroundColor;
 			BackgroundColorPrev = BackgroundColor;
+
+			refreshScreen = false;
 		}
 
         // Get the current time and format it correctly
@@ -459,8 +463,7 @@ class WatchCLCView extends WatchUi.WatchFace {
     // the state of this View and prepare it to be shown. This includes
     // loading resources into memory.
     function onShow() as Void {
-		// to refresh with next onUpdate
-		ForegroundColorPrev = null;
+		refreshScreen = true;
     }
 
     // The user has just looked at their watch. Timers and animations may be started here.
