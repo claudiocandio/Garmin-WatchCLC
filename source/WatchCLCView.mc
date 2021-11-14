@@ -278,7 +278,7 @@ class WatchCLCView extends WatchUi.WatchFace {
 			SecsClip = false;
 		}
 
-		if (doSleep) {
+		if (doSleep || Secs == SECSDISABLED) {
 			Secs = SECSDISABLED;
 			showSecs = false;
 		} else if (Secs == SECSALWAYSON) {
@@ -483,6 +483,9 @@ class WatchCLCView extends WatchUi.WatchFace {
 
     // Terminate any active timers and prepare for slow updates.
     function onEnterSleep() as Void {
+		// workaround for screen refresh when pushing the select button, ok with fr735xt
+		refreshScreen = true;
+
 		showSecs = false;
 		WatchUi.requestUpdate();    
     }

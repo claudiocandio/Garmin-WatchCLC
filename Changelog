@@ -1,5 +1,9 @@
 CHANGELOG
 
+1.0.6
+- Fix Seconds Disabled
+- Fenix6 workaround for screen refresh when pushing the select button
+
 1.0.5
 - Code improvements
 - Minor changes with layouts Screen260x260 and Screen280x280
