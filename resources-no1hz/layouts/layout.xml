@@ -96,7 +96,7 @@
 
     <label id="NotificationIcon" x="86%" y="66%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
-    <label id="DF1Icon" x="26%" y="65%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF1Icon" x="26%" y="64%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="DF1" x="center" y="62%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="DF2Icon" x="26%" y="78%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="DF2" x="center" y="74%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
@@ -121,7 +121,7 @@
 
     <label id="NotificationIcon" x="86%" y="66%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
 
-    <label id="DF1Icon" x="26%" y="65%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DF1Icon" x="26%" y="64%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="DF1" x="center" y="63%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="DF2Icon" x="26%" y="78%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="DF2" x="center" y="74%" justification="Graphics.TEXT_JUSTIFY_CENTER"/>

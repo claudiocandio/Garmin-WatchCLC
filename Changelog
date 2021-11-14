@@ -1,5 +1,10 @@
 CHANGELOG
 
+1.0.5
+- Code improvements
+- Minor changes with layouts Screen260x260 and Screen280x280
+- Set minimum API Level 2.4.0
+
 1.0.4
 - Fix do not disturb/sleep black screen
 

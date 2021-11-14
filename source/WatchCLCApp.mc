@@ -27,20 +27,12 @@ class WatchCLCApp extends Application.AppBase {
         }        
 
     }
-
+    
     // New app settings have been received so trigger a UI update
     function onSettingsChanged() as Void {
-
-        // disable SecsAlwaysOn if not supported
-        // should not do this unless I forget the correct settings.xml for the device
-        var cando1hz = ( Toybox.WatchUi.WatchFace has :onPartialUpdate );
-		if ( getApp().getProperty("SecsAlwaysOn") && !cando1hz) {
-			getApp().setProperty("SecsAlwaysOn", false);
-		}
-
+        WatchCLCView.loadSettings();
         WatchUi.requestUpdate();
     }
-
 }
 
 function getApp() as WatchCLCApp {

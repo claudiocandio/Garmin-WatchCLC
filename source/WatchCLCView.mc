@@ -16,35 +16,50 @@ using Toybox.ActivityMonitor;
 using Toybox.SensorHistory;
 using Toybox.Time.Gregorian;
 
-class DF
-{
-	var ValPrev;
-	var DrawableById;
-    var X;
-    var Y;
-    var WPrev;
-    var HPrev;
-	var J;
-
-    public function initialize(valPrev, drawableById, j, w, h) {
-		ValPrev = valPrev;
-		DrawableById = drawableById;
-		J = j;
-		WPrev = w;
-		HPrev = h;
-    }
-
-    public function save(valPrev, w, h) {
-      ValPrev = valPrev;
-      WPrev = w;
-      HPrev = h;
-    }
+// For loadSettings()
+var Secs = null as Number;
+enum {
+	SECSDISABLED,
+	SECSONGESTURE,
+	SECSALWAYSON
 }
+var ForegroundColor = null as Number;
+var BackgroundColor = null as Number;
+var UseMilitaryFormat = null;
+var UseNotification = null;
+var DF1 = null;
+var DF2 = null;
+var LowBattery = null as Number;
+var cando1hz = false;
+var refreshScreen = true;
 
 class WatchCLCView extends WatchUi.WatchFace {
 
+	class DF {
+		var ValPrev;
+		var DrawableById;
+		var X;
+		var Y;
+		var WPrev;
+		var HPrev;
+		var J;
+
+		public function initialize(valPrev, drawableById, j, w, h) {
+			ValPrev = valPrev;
+			DrawableById = drawableById;
+			J = j;
+			WPrev = w;
+			HPrev = h;
+		}
+
+		public function save(valPrev, w, h) {
+			ValPrev = valPrev;
+			WPrev = w;
+			HPrev = h;
+		}
+	}
+
 	var screen = null as Text;
-	var refreshScreen = true;
 	var ccFontBig = null;
 	var ccFont = null;
 	var ccFontSmall = null;
@@ -52,21 +67,13 @@ class WatchCLCView extends WatchUi.WatchFace {
 	var garminFont = null;
 	var garminFontSmall = null;
 	
-	var ForegroundColor = null as Number;
-	var BackgroundColor = null as Number;
-	var ForegroundColorPrev = null as Number;
-	var BackgroundColorPrev = null as Number;
-
 	var batteryLowPrev = null as Number;
-	var batteryLow = null as Number;
 
-	var Secs = 0;
 	var SecsPrev = 0;
 	var showSecs = false;
 	var showSecsPrev = false;
-	var SecsClip = false;
 
-	var cando1hz = false;
+	var SecsClip = false;
 
 	var doSleep = false;
 	
@@ -115,16 +122,34 @@ class WatchCLCView extends WatchUi.WatchFace {
 		ACTIVEMINUTESICON = "L"
 	}
 
-	enum {
-		SECSDISABLED,
-		SECSONGESTURE,
-		SECSALWAYSON
-	}
-
     function initialize() {
         WatchFace.initialize();
+
 		// see if 1hz is possible
 		cando1hz = ( Toybox.WatchUi.WatchFace has :onPartialUpdate );
+
+		loadSettings();
+    }
+
+    function loadSettings() {
+
+        Secs = getApp().getProperty("Secs");
+        // disable SecsAlwaysOn if not supported
+        // should not do this unless I forget the correct settings.xml for the device
+		if ( Secs == SECSALWAYSON && !cando1hz ) {
+			getApp().setProperty("Secs", SECSONGESTURE);
+			Secs = SECSONGESTURE;
+		}
+
+        ForegroundColor = getApp().getProperty("ForegroundColor");
+        BackgroundColor = getApp().getProperty("BackgroundColor");
+        UseMilitaryFormat = getApp().getProperty("UseMilitaryFormat");
+		LowBattery = getApp().getProperty("LowBattery");
+        UseNotification = getApp().getProperty("UseNotification");
+		DF1 = getApp().getProperty("DF1");
+		DF2 = getApp().getProperty("DF2");
+
+		refreshScreen = true;
     }
 
     // Load your resources here
@@ -235,13 +260,13 @@ class WatchCLCView extends WatchUi.WatchFace {
 		view = View.findDrawableById(df_df2.DrawableById);
 		df_df2.X = view.locX;
 		df_df2.Y = view.locY;
+
     }
 
     // Update the view
     function onUpdate(dc as Dc) as Void {
 
 		doSleep = System.getDeviceSettings().doNotDisturb;
-		Secs = getApp().getProperty("Secs");
 
 		if (SecsClip) {
 			dc.setColor(BackgroundColor, BackgroundColor);
@@ -257,23 +282,10 @@ class WatchCLCView extends WatchUi.WatchFace {
 			Secs = SECSDISABLED;
 			showSecs = false;
 		} else if (Secs == SECSALWAYSON) {
-			if (cando1hz) {
 				showSecs = true;
-			} else {
-				//should not do this unless I forget the correct settings.xml for the device
-				getApp().setProperty("Secs", SECSONGESTURE);
-				Secs = SECSONGESTURE;
-			 }
 		}
 
-        ForegroundColor = getApp().getProperty("ForegroundColor");
-        BackgroundColor = getApp().getProperty("BackgroundColor");
-
-		if(
-			refreshScreen ||
-			ForegroundColor != ForegroundColorPrev || 
-			BackgroundColor != BackgroundColorPrev
-		   ){
+		if(refreshScreen){
 
 			dc.setColor(ForegroundColor, BackgroundColor);
 			dc.clear();
@@ -296,9 +308,6 @@ class WatchCLCView extends WatchUi.WatchFace {
 			batteryLowPrev = null;
 			showSecsPrev = true;
 
-			ForegroundColorPrev = ForegroundColor;
-			BackgroundColorPrev = BackgroundColor;
-
 			refreshScreen = false;
 		}
 
@@ -311,7 +320,7 @@ class WatchCLCView extends WatchUi.WatchFace {
                 hours = hours - 12;
             }
         } else {
-            if (getApp().getProperty("UseMilitaryFormat")) {
+            if (UseMilitaryFormat) {
                 timeFormat = "$1$$2$";
                 hours = hours.format("%02d");
             }
@@ -381,13 +390,12 @@ class WatchCLCView extends WatchUi.WatchFace {
 		}
 
         var battery = System.getSystemStats().battery;
-		var batteryLow = getApp().getProperty("LowBattery");
 		var batteryStr = Lang.format("$1$%", [battery.format("%3d")]);
 
-        if (batteryStr != df_batt.ValPrev || batteryLow != batteryLowPrev) {
+        if (batteryStr != df_batt.ValPrev || LowBattery != batteryLowPrev) {
 			var shape = System.getDeviceSettings().screenShape;
 
-    	    if (battery < batteryLow){
+    	    if (battery < LowBattery){
 				if (shape == System.SCREEN_SHAPE_ROUND){
 					drawcc(dc, BATTERYICON, garminFont, Graphics.COLOR_RED, df_batti);
 				} else { // System.SCREEN_SHAPE_SEMI_ROUND & System.SCREEN_SHAPE_RECTANGLE
@@ -405,7 +413,7 @@ class WatchCLCView extends WatchUi.WatchFace {
     	    }
 
 			df_batt.ValPrev = batteryStr;
-			batteryLowPrev = batteryLow;
+			batteryLowPrev = LowBattery;
         }
 
         if (heart != df_heart.ValPrev) {
@@ -434,7 +442,7 @@ class WatchCLCView extends WatchUi.WatchFace {
 		}
 
  		// Show do Notification icon
-		if (getApp().getProperty("UseNotification")) {
+		if (UseNotification) {
 			if ( System.getDeviceSettings().notificationCount > 0 && !df_not.ValPrev ) {
 				drawcc(dc, NOTIFICATIONICON, garminFont, Graphics.COLOR_GREEN, df_not);
 				df_not.ValPrev = true;
@@ -449,14 +457,15 @@ class WatchCLCView extends WatchUi.WatchFace {
 			}
 		}
 
-		printDF(dc, "DF1", df_df1, df_df1i, info);
-		printDF(dc, "DF2", df_df2, df_df2i, info);
+		printDF(dc, "DF1", DF1, df_df1, df_df1i, info);
+		printDF(dc, "DF2", DF2, df_df2, df_df2i, info);
     }
 
     // Called when this View is removed from the screen. Save the
     // state of this View here. This includes freeing resources from
     // memory.
     function onHide() as Void {
+		refreshScreen = true;
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -551,9 +560,8 @@ class WatchCLCView extends WatchUi.WatchFace {
 		}
 	}
 
-	function printDF(dc, df12, df, dfi, info) {
+	function printDF(dc, df12, dfp, df, dfi, info) {
 
-        var dfp = getApp().getProperty(df12);
 		var dfval = null;
 		var color = 0;
 		var font = null;
@@ -675,6 +683,7 @@ class WatchCLCViewDelegate extends WatchUi.WatchFaceDelegate
         cando1hz = false;
 		if ( Secs == SECSALWAYSON ) {
 			getApp().setProperty("Secs", SECSONGESTURE);
+			Secs = SECSONGESTURE;
 		}
 
     }
