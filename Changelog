@@ -1,5 +1,8 @@
 CHANGELOG
 
+1.0.7
+- Add fēnix® 7, fēnix® 7S and fēnix® 7X, only tested with the simulator
+
 1.0.6
 - Fix Seconds Disabled
 - Fenix6 workaround for screen refresh when pushing the select button
